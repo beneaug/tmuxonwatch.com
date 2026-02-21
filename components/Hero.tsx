@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import TerminalAnimation from "./TerminalAnimation";
 import WatchScreen from "./WatchScreen";
 
@@ -11,9 +12,14 @@ export default function Hero() {
           {/* Left — copy */}
           <div className="space-y-8">
             <div className="space-y-4">
-              <p className="font-mono text-green-400 text-sm tracking-wider uppercase">
-                tmux on watch
-              </p>
+              <Image
+                src="/logo.png"
+                alt="tmux on watch"
+                width={200}
+                height={80}
+                className="h-auto"
+                priority
+              />
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
                 Your terminal.
                 <br />

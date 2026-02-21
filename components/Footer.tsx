@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Footer() {
   return (
     <footer className="border-t border-white/5 py-16 px-6">
@@ -25,9 +27,13 @@ export default function Footer() {
         </div>
 
         <div className="pt-4">
-          <span className="font-mono text-xs text-white/20 tracking-widest uppercase">
-            tmux on watch
-          </span>
+          <Image
+            src="/logo.png"
+            alt="tmux on watch"
+            width={120}
+            height={48}
+            className="h-auto mx-auto opacity-20"
+          />
         </div>
       </div>
     </footer>
