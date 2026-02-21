@@ -30,8 +30,8 @@ export default function Footer() {
           <Image
             src="/logo.png"
             alt="tmux on watch"
-            width={120}
-            height={48}
+            width={180}
+            height={72}
             className="h-auto mx-auto opacity-20"
           />
         </div>

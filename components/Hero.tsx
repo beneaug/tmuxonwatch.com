@@ -6,7 +6,7 @@ import WatchScreen from "./WatchScreen";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-20 pb-32">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-10 pb-32">
       <div className="relative z-10 max-w-7xl mx-auto w-full">
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-12 items-center">
           {/* Left — copy */}
@@ -15,9 +15,9 @@ export default function Hero() {
               <Image
                 src="/logo.png"
                 alt="tmux on watch"
-                width={200}
-                height={80}
-                className="h-auto"
+                width={320}
+                height={128}
+                className="h-auto -mt-2"
                 priority
               />
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
