@@ -7,9 +7,7 @@ import Image from "next/image";
  * Pixel-matched to the real Apple Watch screenshot.
  */
 export default function WatchScreen({ className = "" }: { className?: string }) {
-  // Font size tokens — using CSS clamp for fluid scaling
   const fs = "clamp(5px, 1.1vw, 7.5px)";
-  const fsSm = "clamp(4px, 0.95vw, 6.5px)";
 
   return (
     <div className={`relative ${className}`}>
@@ -51,13 +49,15 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
             (↑ to select)
           </p>
 
-          {/* Green divider */}
+          {/* ─── Green divider above input ─── */}
           <div
-            className="text-green-500/30 leading-none overflow-hidden whitespace-nowrap"
-            style={{ fontSize: fsSm, marginBottom: "3%" }}
-          >
-            ──────────────────────────────
-          </div>
+            className="w-full shrink-0"
+            style={{
+              height: "1px",
+              background: "rgba(34, 197, 94, 0.35)",
+              marginBottom: "4%",
+            }}
+          />
 
           {/* User prompt — wraps naturally, exact text from screenshot */}
           <div
@@ -70,13 +70,16 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
             <span className="animate-blink text-green-400">█</span>
           </div>
 
-          {/* Green divider */}
+          {/* ─── Green divider below input ─── */}
           <div
-            className="text-green-500/30 leading-none overflow-hidden whitespace-nowrap"
-            style={{ fontSize: fsSm, marginTop: "3%", marginBottom: "3%" }}
-          >
-            ──────────────────────────────
-          </div>
+            className="w-full shrink-0"
+            style={{
+              height: "1px",
+              background: "rgba(34, 197, 94, 0.35)",
+              marginTop: "4%",
+              marginBottom: "4%",
+            }}
+          />
 
           {/* ►► bypass permissions */}
           <div style={{ lineHeight: 1.5 }} className="mt-auto">

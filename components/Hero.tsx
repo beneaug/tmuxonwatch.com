@@ -59,18 +59,18 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right — terminal + watch companion */}
+          {/* Right — terminal with watch overlapping */}
           <div
-            className="animate-fade-in-up flex items-end gap-8"
+            className="animate-fade-in-up relative"
             style={{ animationDelay: "0.3s" }}
           >
-            {/* Main terminal */}
-            <div className="flex-1 min-w-0">
-              <TerminalAnimation />
-            </div>
+            {/* Main terminal — full width */}
+            <TerminalAnimation />
 
-            {/* Apple Watch showing Claude Code */}
-            <WatchScreen className="shrink-0 w-[160px] sm:w-[190px] self-center" />
+            {/* Apple Watch overlapping bottom-right corner */}
+            <div className="absolute -bottom-10 -right-4 sm:-right-6 z-20">
+              <WatchScreen className="w-[140px] sm:w-[175px]" />
+            </div>
           </div>
         </div>
       </div>

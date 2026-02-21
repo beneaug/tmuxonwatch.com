@@ -2,157 +2,137 @@
 
 import TerminalWindow from "./TerminalWindow";
 
-const tmuxLines = [
-  {
-    parts: [
-      { text: "$ ", color: "text-white/50" },
-      { text: "npm run build", color: "text-white" },
-    ],
-  },
-  {
-    parts: [
-      { text: "> ", color: "text-white/40" },
-      { text: "stratum-quote@2.4.0 build", color: "text-white/60" },
-    ],
-  },
-  {
-    parts: [
-      { text: "> ", color: "text-white/40" },
-      { text: "next build", color: "text-white/60" },
-    ],
-  },
-  {
-    parts: [
-      { text: "  ", color: "text-white" },
-      { text: "▲ Next.js 15.1.3", color: "text-white/70" },
-    ],
-  },
-  {
-    parts: [
-      { text: "  Creating an optimized production build", color: "text-white/60" },
-      { text: " ...", color: "text-white/30" },
-    ],
-  },
-  {
-    parts: [
-      { text: "  ✓ ", color: "text-green-400" },
-      { text: "Compiled successfully in 4.2s", color: "text-white/80" },
-    ],
-  },
-  {
-    parts: [
-      { text: "  ✓ ", color: "text-green-400" },
-      { text: "Collecting page data", color: "text-white/80" },
-    ],
-  },
-  {
-    parts: [
-      { text: "  ✓ ", color: "text-green-400" },
-      { text: "Generating static pages ", color: "text-white/80" },
-      { text: "(14/14)", color: "text-cyan-400" },
-    ],
-  },
-  {
-    parts: [
-      { text: "  ✓ ", color: "text-green-400" },
-      { text: "Finalizing page optimization", color: "text-white/80" },
-    ],
-  },
-  {
-    parts: [{ text: "", color: "text-white" }],
-  },
-  {
-    parts: [
-      { text: "  Route              ", color: "text-white/50" },
-      { text: "Size     ", color: "text-white/50" },
-      { text: "First Load", color: "text-white/50" },
-    ],
-  },
-  {
-    parts: [
-      { text: "  ○ /                ", color: "text-white/80" },
-      { text: "5.2 kB   ", color: "text-white/60" },
-      { text: "89.1 kB", color: "text-green-400" },
-    ],
-  },
-  {
-    parts: [
-      { text: "  ○ /api/quotes      ", color: "text-white/80" },
-      { text: "0 B      ", color: "text-white/60" },
-      { text: "83.9 kB", color: "text-green-400" },
-    ],
-  },
-  {
-    parts: [
-      { text: "  ● /dashboard       ", color: "text-cyan-400" },
-      { text: "12.4 kB  ", color: "text-white/60" },
-      { text: "96.3 kB", color: "text-yellow-400" },
-    ],
-  },
-];
-
-// Condensed version of the same output for the watch
-export const watchLines = [
-  {
-    parts: [
-      { text: "$ ", color: "text-white/50" },
-      { text: "npm run build", color: "text-white" },
-    ],
-  },
-  {
-    parts: [
-      { text: "✓ ", color: "text-green-400" },
-      { text: "Compiled 4.2s", color: "text-white/80" },
-    ],
-  },
-  {
-    parts: [
-      { text: "✓ ", color: "text-green-400" },
-      { text: "Pages ", color: "text-white/80" },
-      { text: "(14/14)", color: "text-cyan-400" },
-    ],
-  },
-  {
-    parts: [
-      { text: "✓ ", color: "text-green-400" },
-      { text: "Optimized", color: "text-white/80" },
-    ],
-  },
-  {
-    parts: [
-      { text: "/ ", color: "text-white/60" },
-      { text: "89.1 kB", color: "text-green-400" },
-    ],
-  },
-  {
-    parts: [
-      { text: "/dash ", color: "text-cyan-400" },
-      { text: "96.3 kB", color: "text-yellow-400" },
-    ],
-  },
-];
-
+/**
+ * Hero terminal content matching a real tmux session with Claude Code output.
+ * Content mirrors the user's actual screenshot.
+ */
 export default function TerminalAnimation() {
   return (
-    <TerminalWindow title="tmux: main — bash">
-      <div className="space-y-0.5 min-h-[280px]">
-        {tmuxLines.map((line, i) => (
-          <div key={i} className="terminal-line whitespace-pre">
-            {line.parts.map((part, j) => (
-              <span key={j} className={part.color}>
-                {part.text}
-              </span>
-            ))}
-          </div>
-        ))}
-        <div
-          className="terminal-line mt-2"
-          style={{ animationDelay: "7.5s" }}
-        >
-          <span className="text-white/50">$ </span>
-          <span className="animate-blink text-green-400">▊</span>
-        </div>
+    <TerminalWindow>
+      <div className="space-y-0 text-[11px]">
+        {/* git push output */}
+        <L>
+          <span className="text-white/40">{"  └─ "}</span>
+          <span className="text-white/70">[main ffed100] Pixel-match watch display to reference screenshot</span>
+        </L>
+        <L>
+          <span className="text-white/50">{"     1 file changed, 37 insertions(+), 65 deletions(-)"}</span>
+        </L>
+        <L>
+          <span className="text-white/50">{"     To https://github.com/beneaug/tmuxonwatch.com.git"}</span>
+        </L>
+        <L>
+          <span className="text-white/50">{"       7759159..ffed100  main -> main"}</span>
+        </L>
+
+        <Blank />
+
+        {/* Claude Code bullet list */}
+        <L>
+          <span className="text-blue-400">● </span>
+          <span className="text-white/90">
+            Pushed successfully. Vercel will auto-deploy from the main branch.
+            The latest WatchScreen.tsx now includes every element from your
+            reference screenshot:
+          </span>
+        </L>
+
+        <Blank />
+
+        <L>
+          <span className="text-white/60">{"  – "}</span>
+          <span className="font-bold text-white/80">✻ Worked for 7m 31s</span>
+          <span className="text-white/50"> — with the exact ✻ symbol</span>
+        </L>
+        <L>
+          <span className="text-white/60">{"  – "}</span>
+          <span className="font-bold text-white/80">[Image #17] [Image #18]</span>
+          <span className="text-white/50"> — indented, muted</span>
+        </L>
+        <L>
+          <span className="text-white/60">{"  – "}</span>
+          <span className="font-bold text-white/80">(↑ to select)</span>
+          <span className="text-white/50"> — dimmed hint</span>
+        </L>
+        <L>
+          <span className="text-white/60">{"  – "}</span>
+          <span className="font-bold text-white/80">Green dividers</span>
+          <span className="text-white/50"> — </span>
+          <span className="text-green-500/30">────</span>
+          <span className="text-white/50"> lines in green-500/30</span>
+        </L>
+        <L>
+          <span className="text-white/60">{"  – "}</span>
+          <span className="font-bold text-white/80">Full prompt text</span>
+          <span className="text-white/50">
+            {" "}— ❯ with the exact &quot;the display in apple watch bezel on
+            site is still wrong...&quot;
+          </span>
+        </L>
+        <L>
+          <span className="text-white/60">{"  – "}</span>
+          <span className="font-bold text-red-400">►► bypass permissions</span>
+          <span className="text-white/50"> / </span>
+          <span className="font-bold text-green-400">on</span>
+          <span className="text-white/50"> (shift+tab to cycle) — red arrows, green &quot;on&quot;</span>
+        </L>
+
+        <Blank />
+
+        <L>
+          <span className="text-white/60">
+            All using fluid clamp() font sizing for responsive scaling. The
+            deployment should be live on tmuxonwatch.com within a minute or two.
+          </span>
+        </L>
+
+        <Blank />
+
+        {/* Cogitated */}
+        <L>
+          <span className="text-white/50">✻ </span>
+          <span className="text-white/40">Cogitated for 3m 28s</span>
+        </L>
+
+        <Blank />
+
+        {/* Feedback prompt */}
+        <L>
+          <span className="text-blue-400">● </span>
+          <span className="font-bold text-white/80">How is Claude doing this session?</span>
+          <span className="text-white/50"> (optional)</span>
+        </L>
+        <L>
+          <span className="text-white/50">{"  1: Bad    2: Fine    3: Good    0: Dismiss"}</span>
+        </L>
+
+        <Blank />
+
+        {/* User prompt */}
+        <L>
+          <span className="text-white/60">❯ </span>
+          <span className="text-cyan-300/70">check the site now, does it match?</span>
+        </L>
+
+        <Blank />
+
+        {/* Bypass permissions */}
+        <L>
+          <span className="text-white/40">{"  "}</span>
+          <span className="text-red-400">►► </span>
+          <span className="text-white/50">bypass permissions </span>
+          <span className="text-green-400">on</span>
+          <span className="text-white/30"> (shift+tab to cycle)</span>
+        </L>
       </div>
     </TerminalWindow>
   );
+}
+
+function L({ children }: { children: React.ReactNode }) {
+  return <div className="whitespace-pre-wrap leading-[1.65]">{children}</div>;
+}
+
+function Blank() {
+  return <div className="h-[1.1em]" />;
 }

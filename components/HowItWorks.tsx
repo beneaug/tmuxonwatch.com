@@ -21,7 +21,7 @@ export default function HowItWorks() {
           {/* Step 1: Install */}
           <div className="text-center space-y-6">
             <div className="flex justify-center">
-              <TerminalWindow title="bash">
+              <TerminalWindow>
                 <div className="space-y-1 text-xs sm:text-sm">
                   <div>
                     <span className="text-white/50">$ </span>
