@@ -17,7 +17,7 @@ export default function Hero() {
                 alt="tmux on watch"
                 width={320}
                 height={128}
-                className="h-auto block mx-auto"
+                className="h-auto block mx-auto -mt-4 mb-6"
                 priority
               />
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
