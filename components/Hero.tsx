@@ -8,7 +8,7 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-10 pb-32">
       <div className="relative z-10 max-w-7xl mx-auto w-full">
-        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-12 items-center">
+        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-12 items-start">
           {/* Left — copy */}
           <div className="space-y-8">
             <div className="space-y-4">
@@ -17,7 +17,7 @@ export default function Hero() {
                 alt="tmux on watch"
                 width={320}
                 height={128}
-                className="h-auto"
+                className="h-auto block mx-auto"
                 priority
               />
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
