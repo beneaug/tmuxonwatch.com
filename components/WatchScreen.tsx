@@ -49,6 +49,12 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
             (↑ to select)
           </p>
 
+          {/* Grey divider above input */}
+          <div
+            className="w-full shrink-0"
+            style={{ height: "1px", background: "rgba(255,255,255,0.15)", marginBottom: "4%" }}
+          />
+
           {/* User prompt — same text as the mac terminal */}
           <div
             className="text-white/90 flex-1"
@@ -60,13 +66,19 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
             <span className="animate-blink text-green-400">█</span>
           </div>
 
+          {/* Grey divider below input */}
+          <div
+            className="w-full shrink-0"
+            style={{ height: "1px", background: "rgba(255,255,255,0.15)", marginTop: "4%", marginBottom: "4%" }}
+          />
+
           {/* ►► bypass permissions — red */}
           <div style={{ lineHeight: 1.5 }} className="mt-auto shrink-0">
             <div>
               <span className="text-red-400">►► bypass permissions</span>
             </div>
             <div>
-              <span className="text-green-400">on</span>
+              <span className="text-red-400">on</span>
               <span className="text-white/35"> (shift+tab to cycle)</span>
             </div>
           </div>

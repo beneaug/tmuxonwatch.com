@@ -89,7 +89,7 @@ export default function TerminalAnimation() {
         {/* User prompt — SAME text as the watch display */}
         <L>
           <span className="text-white/60">❯ </span>
-          <span className="text-cyan-300/70">
+          <span className="text-white">
             the display in apple watch bezel on site is still wrong, the display
             is a div short. please ensure it is visually perfect and cohesive
           </span>
@@ -102,7 +102,7 @@ export default function TerminalAnimation() {
         <L>
           <span className="text-white/40">{"  "}</span>
           <span className="text-red-400">►► bypass permissions </span>
-          <span className="text-green-400">on</span>
+          <span className="text-red-400">on</span>
           <span className="text-white/30"> (shift+tab to cycle)</span>
         </L>
       </div>
