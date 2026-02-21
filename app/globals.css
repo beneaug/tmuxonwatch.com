@@ -77,6 +77,16 @@ body {
 .terminal-line:nth-child(11) { animation-delay: 5.5s; }
 .terminal-line:nth-child(12) { animation-delay: 6.0s; }
 
+/* QR scan line animation */
+@keyframes scan {
+  0%, 100% { top: 25%; }
+  50% { top: 70%; }
+}
+
+.animate-scan {
+  animation: scan 2.5s ease-in-out infinite;
+}
+
 /* Selection */
 ::selection {
   background: rgba(34, 197, 94, 0.3);

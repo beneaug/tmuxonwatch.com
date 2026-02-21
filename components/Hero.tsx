@@ -1,14 +1,11 @@
 "use client";
 
-import TerminalAnimation from "./TerminalAnimation";
+import Image from "next/image";
+import TerminalAnimation, { watchLines } from "./TerminalAnimation";
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-20 pb-32">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-green-500/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style={{ animationDelay: "1.5s" }} />
-
       <div className="relative z-10 max-w-6xl mx-auto w-full">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left — copy */}
@@ -20,9 +17,7 @@ export default function Hero() {
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
                 Your terminal.
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400">
-                  On your wrist.
-                </span>
+                On your wrist.
               </h1>
               <p className="text-lg text-white/60 max-w-lg leading-relaxed">
                 Live tmux output on Apple Watch. ANSI colors. Instant
@@ -64,9 +59,57 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right — terminal animation */}
-          <div className="animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-            <TerminalAnimation />
+          {/* Right — terminal + watch companion */}
+          <div className="animate-fade-in-up flex items-end gap-6" style={{ animationDelay: "0.3s" }}>
+            {/* Main terminal */}
+            <div className="flex-1 min-w-0">
+              <TerminalAnimation />
+            </div>
+
+            {/* Apple Watch with bezel */}
+            <div className="relative shrink-0 w-[140px] sm:w-[160px] self-center">
+              {/* Watch bezel image */}
+              <Image
+                src="/watch-bezel.png"
+                alt="Apple Watch"
+                width={320}
+                height={480}
+                className="relative z-10 w-full h-auto pointer-events-none"
+                priority
+              />
+              {/* Terminal content inside the watch screen */}
+              <div className="absolute z-0 inset-0 flex items-center justify-center">
+                <div
+                  className="bg-black rounded-[22%] overflow-hidden"
+                  style={{
+                    width: "62%",
+                    height: "38%",
+                    marginTop: "-2%",
+                  }}
+                >
+                  <div className="p-2 font-mono leading-tight h-full flex flex-col justify-start overflow-hidden">
+                    <div className="text-[6px] sm:text-[7px] text-green-400/60 mb-1">
+                      tmux: main
+                    </div>
+                    <div className="space-y-[1px]">
+                      {watchLines.map((line, i) => (
+                        <div key={i} className="terminal-line whitespace-nowrap" style={{ animationDelay: `${0.5 + i * 0.5}s` }}>
+                          {line.parts.map((part, j) => (
+                            <span
+                              key={j}
+                              className={part.color}
+                              style={{ fontSize: "6px" }}
+                            >
+                              {part.text}
+                            </span>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
