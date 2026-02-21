@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import TerminalAnimation, { watchLines } from "./TerminalAnimation";
+import TerminalAnimation from "./TerminalAnimation";
+import WatchScreen from "./WatchScreen";
 
 export default function Hero() {
   return (
@@ -69,70 +69,8 @@ export default function Hero() {
               <TerminalAnimation />
             </div>
 
-            {/* Apple Watch with bezel */}
-            <div className="relative shrink-0 w-[130px] sm:w-[150px] self-center">
-              <Image
-                src="/watch-bezel.png"
-                alt="Apple Watch"
-                width={260}
-                height={400}
-                className="relative z-10 w-full h-auto pointer-events-none select-none"
-                priority
-              />
-              {/* Screen content — positioned to match the transparent screen area */}
-              <div
-                className="absolute z-0 overflow-hidden bg-black"
-                style={{
-                  top: "24.5%",
-                  left: "12%",
-                  width: "76%",
-                  height: "41%",
-                  borderRadius: "16%",
-                }}
-              >
-                <div className="w-full h-full p-[10%] font-mono flex flex-col overflow-hidden">
-                  <div className="text-[7px] sm:text-[8px] text-green-400/70 mb-[6%] truncate">
-                    tmux: main — bash
-                  </div>
-                  <div className="space-y-[3px] flex-1">
-                    {watchLines.map((line, i) => (
-                      <div
-                        key={i}
-                        className="terminal-line whitespace-nowrap"
-                        style={{ animationDelay: `${0.5 + i * 0.5}s` }}
-                      >
-                        {line.parts.map((part, j) => (
-                          <span
-                            key={j}
-                            className={part.color}
-                            style={{ fontSize: "min(7.5px, 1.6vw)" }}
-                          >
-                            {part.text}
-                          </span>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                  <div
-                    className="terminal-line mt-auto pt-[4%]"
-                    style={{ animationDelay: "3.5s" }}
-                  >
-                    <span
-                      className="text-white/50"
-                      style={{ fontSize: "min(7px, 1.5vw)" }}
-                    >
-                      ${" "}
-                    </span>
-                    <span
-                      className="animate-blink text-green-400"
-                      style={{ fontSize: "min(7px, 1.5vw)" }}
-                    >
-                      ▊
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Apple Watch showing Claude Code */}
+            <WatchScreen className="shrink-0 w-[130px] sm:w-[150px] self-center" />
           </div>
         </div>
       </div>
