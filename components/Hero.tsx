@@ -60,52 +60,75 @@ export default function Hero() {
           </div>
 
           {/* Right — terminal + watch companion */}
-          <div className="animate-fade-in-up flex items-end gap-6" style={{ animationDelay: "0.3s" }}>
+          <div
+            className="animate-fade-in-up flex items-end gap-8"
+            style={{ animationDelay: "0.3s" }}
+          >
             {/* Main terminal */}
             <div className="flex-1 min-w-0">
               <TerminalAnimation />
             </div>
 
             {/* Apple Watch with bezel */}
-            <div className="relative shrink-0 w-[140px] sm:w-[160px] self-center">
-              {/* Watch bezel image */}
+            <div className="relative shrink-0 w-[130px] sm:w-[150px] self-center">
               <Image
                 src="/watch-bezel.png"
                 alt="Apple Watch"
-                width={320}
-                height={480}
-                className="relative z-10 w-full h-auto pointer-events-none"
+                width={260}
+                height={400}
+                className="relative z-10 w-full h-auto pointer-events-none select-none"
                 priority
               />
-              {/* Terminal content inside the watch screen */}
-              <div className="absolute z-0 inset-0 flex items-center justify-center">
-                <div
-                  className="bg-black rounded-[22%] overflow-hidden"
-                  style={{
-                    width: "62%",
-                    height: "38%",
-                    marginTop: "-2%",
-                  }}
-                >
-                  <div className="p-2 font-mono leading-tight h-full flex flex-col justify-start overflow-hidden">
-                    <div className="text-[6px] sm:text-[7px] text-green-400/60 mb-1">
-                      tmux: main
-                    </div>
-                    <div className="space-y-[1px]">
-                      {watchLines.map((line, i) => (
-                        <div key={i} className="terminal-line whitespace-nowrap" style={{ animationDelay: `${0.5 + i * 0.5}s` }}>
-                          {line.parts.map((part, j) => (
-                            <span
-                              key={j}
-                              className={part.color}
-                              style={{ fontSize: "6px" }}
-                            >
-                              {part.text}
-                            </span>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
+              {/* Screen content — positioned to match the transparent screen area */}
+              <div
+                className="absolute z-0 overflow-hidden bg-black"
+                style={{
+                  top: "24.5%",
+                  left: "12%",
+                  width: "76%",
+                  height: "41%",
+                  borderRadius: "16%",
+                }}
+              >
+                <div className="w-full h-full p-[10%] font-mono flex flex-col overflow-hidden">
+                  <div className="text-[7px] sm:text-[8px] text-green-400/70 mb-[6%] truncate">
+                    tmux: main — bash
+                  </div>
+                  <div className="space-y-[3px] flex-1">
+                    {watchLines.map((line, i) => (
+                      <div
+                        key={i}
+                        className="terminal-line whitespace-nowrap"
+                        style={{ animationDelay: `${0.5 + i * 0.5}s` }}
+                      >
+                        {line.parts.map((part, j) => (
+                          <span
+                            key={j}
+                            className={part.color}
+                            style={{ fontSize: "min(7.5px, 1.6vw)" }}
+                          >
+                            {part.text}
+                          </span>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                  <div
+                    className="terminal-line mt-auto pt-[4%]"
+                    style={{ animationDelay: "3.5s" }}
+                  >
+                    <span
+                      className="text-white/50"
+                      style={{ fontSize: "min(7px, 1.5vw)" }}
+                    >
+                      ${" "}
+                    </span>
+                    <span
+                      className="animate-blink text-green-400"
+                      style={{ fontSize: "min(7px, 1.5vw)" }}
+                    >
+                      ▊
+                    </span>
                   </div>
                 </div>
               </div>

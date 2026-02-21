@@ -16,7 +16,7 @@ export default function HowItWorks() {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-12 md:gap-8">
+        <div className="grid md:grid-cols-3 gap-12 md:gap-8 items-start">
           {/* Step 1: Install */}
           <div className="text-center space-y-6">
             <div className="flex justify-center">
@@ -61,7 +61,7 @@ export default function HowItWorks() {
             </div>
           </div>
 
-          {/* Step 2: Scan — iPhone bezel */}
+          {/* Step 2: Scan — iPhone bezel with QR code */}
           <div className="text-center space-y-6">
             <div className="flex justify-center">
               <div className="relative w-[180px] sm:w-[200px]">
@@ -69,68 +69,67 @@ export default function HowItWorks() {
                 <Image
                   src="/iphone-bezel.png"
                   alt="iPhone"
-                  width={460}
-                  height={932}
-                  className="relative z-10 w-full h-auto pointer-events-none"
+                  width={453}
+                  height={912}
+                  className="relative z-10 w-full h-auto pointer-events-none select-none"
                 />
-                {/* QR scanner content inside the phone screen */}
-                <div className="absolute z-0 inset-0 flex items-center justify-center">
-                  <div
-                    className="bg-[#0a0a0a] overflow-hidden flex flex-col items-center justify-center"
-                    style={{
-                      width: "88%",
-                      height: "94%",
-                      borderRadius: "12%",
-                      marginTop: "0%",
-                    }}
-                  >
-                    {/* Camera viewfinder mock */}
-                    <div className="relative w-full flex-1 flex items-center justify-center bg-[#111]">
-                      {/* Dim grid pattern */}
-                      <div className="absolute inset-0 opacity-5" style={{
-                        backgroundImage: "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)",
-                        backgroundSize: "20px 20px",
-                      }} />
+                {/* Screen content — precisely covering the iPhone screen area */}
+                <div
+                  className="absolute z-0 overflow-hidden bg-[#0a0a0a]"
+                  style={{
+                    top: "2.4%",
+                    left: "4.6%",
+                    width: "90.8%",
+                    height: "95.2%",
+                    borderRadius: "11% / 5.5%",
+                  }}
+                >
+                  <div className="w-full h-full flex flex-col items-center justify-center relative">
+                    {/* Subtle background grid */}
+                    <div
+                      className="absolute inset-0 opacity-[0.03]"
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px)",
+                        backgroundSize: "24px 24px",
+                      }}
+                    />
 
-                      {/* QR frame corners */}
-                      <div className="relative w-20 h-20">
-                        {/* Top-left */}
-                        <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-green-400" />
-                        {/* Top-right */}
-                        <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-green-400" />
-                        {/* Bottom-left */}
-                        <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-green-400" />
-                        {/* Bottom-right */}
-                        <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-green-400" />
+                    {/* Dynamic Island area */}
+                    <div className="absolute top-[3%] left-1/2 -translate-x-1/2 w-[35%] h-[3.5%] bg-black rounded-full z-20" />
 
-                        {/* QR icon hint */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <svg
-                            className="w-8 h-8 text-white/20"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={1}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z"
-                            />
-                          </svg>
-                        </div>
+                    {/* Top label */}
+                    <p className="absolute top-[10%] text-[9px] font-mono text-white/30 tracking-wider uppercase">
+                      TerminalPulse
+                    </p>
+
+                    {/* QR code with scanning frame */}
+                    <div className="relative">
+                      {/* Corner brackets */}
+                      <div className="absolute -inset-3 z-10">
+                        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-green-400/70 rounded-tl" />
+                        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-green-400/70 rounded-tr" />
+                        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-green-400/70 rounded-bl" />
+                        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-green-400/70 rounded-br" />
                       </div>
 
+                      {/* Actual QR code */}
+                      <Image
+                        src="/qr-code.svg"
+                        alt="QR Code"
+                        width={120}
+                        height={120}
+                        className="w-[100px] h-[100px] sm:w-[110px] sm:h-[110px] relative z-0"
+                      />
+
                       {/* Scan line */}
-                      <div className="absolute left-[20%] right-[20%] h-[2px] bg-green-400/40 animate-scan" />
+                      <div className="absolute left-0 right-0 h-[2px] bg-green-400/50 z-10 animate-scan" />
                     </div>
 
-                    {/* Bottom bar */}
-                    <div className="w-full px-4 py-3 text-center">
-                      <p className="text-[9px] font-mono text-white/40">
-                        Point camera at QR code
-                      </p>
-                    </div>
+                    {/* Bottom label */}
+                    <p className="absolute bottom-[8%] text-[8px] font-mono text-white/30">
+                      Point camera at QR code
+                    </p>
                   </div>
                 </div>
               </div>
@@ -146,7 +145,7 @@ export default function HowItWorks() {
             </div>
           </div>
 
-          {/* Step 3: Watch — Watch bezel */}
+          {/* Step 3: Watch — Watch bezel with terminal output */}
           <div className="text-center space-y-6">
             <div className="flex justify-center">
               <div className="relative w-[160px] sm:w-[180px]">
@@ -154,46 +153,76 @@ export default function HowItWorks() {
                 <Image
                   src="/watch-bezel.png"
                   alt="Apple Watch"
-                  width={320}
-                  height={480}
-                  className="relative z-10 w-full h-auto pointer-events-none"
+                  width={260}
+                  height={400}
+                  className="relative z-10 w-full h-auto pointer-events-none select-none"
                 />
-                {/* Terminal content inside the watch screen */}
-                <div className="absolute z-0 inset-0 flex items-center justify-center">
-                  <div
-                    className="bg-black rounded-[22%] overflow-hidden"
-                    style={{
-                      width: "62%",
-                      height: "38%",
-                      marginTop: "-2%",
-                    }}
-                  >
-                    <div className="p-2 font-mono leading-tight h-full flex flex-col justify-start overflow-hidden">
-                      <div className="text-[7px] text-green-400/60 mb-1">
-                        tmux: main
+                {/* Screen content — precisely covering the watch screen area */}
+                <div
+                  className="absolute z-0 overflow-hidden bg-black"
+                  style={{
+                    top: "24.5%",
+                    left: "12%",
+                    width: "76%",
+                    height: "41%",
+                    borderRadius: "16%",
+                  }}
+                >
+                  <div className="w-full h-full p-[10%] font-mono flex flex-col overflow-hidden">
+                    <div className="text-[8px] sm:text-[9px] text-green-400/70 mb-[6%] truncate">
+                      tmux: main — bash
+                    </div>
+                    <div className="space-y-[3px]">
+                      <div className="whitespace-nowrap">
+                        <span className="text-white/50 text-[8px] sm:text-[9px]">
+                          ${" "}
+                        </span>
+                        <span className="text-white text-[8px] sm:text-[9px]">
+                          npm run build
+                        </span>
                       </div>
-                      <div className="space-y-[2px]">
-                        <div className="whitespace-nowrap">
-                          <span className="text-white/50" style={{ fontSize: "7px" }}>$ </span>
-                          <span className="text-white" style={{ fontSize: "7px" }}>npm run build</span>
-                        </div>
-                        <div className="whitespace-nowrap">
-                          <span className="text-green-400" style={{ fontSize: "7px" }}>✓ </span>
-                          <span className="text-white/80" style={{ fontSize: "7px" }}>Compiled 4.2s</span>
-                        </div>
-                        <div className="whitespace-nowrap">
-                          <span className="text-green-400" style={{ fontSize: "7px" }}>✓ </span>
-                          <span className="text-white/80" style={{ fontSize: "7px" }}>Pages </span>
-                          <span className="text-cyan-400" style={{ fontSize: "7px" }}>(14/14)</span>
-                        </div>
-                        <div className="whitespace-nowrap">
-                          <span className="text-green-400" style={{ fontSize: "7px" }}>✓ </span>
-                          <span className="text-white/80" style={{ fontSize: "7px" }}>Optimized</span>
-                        </div>
-                        <div className="whitespace-nowrap">
-                          <span className="text-white/60" style={{ fontSize: "7px" }}>/ </span>
-                          <span className="text-green-400" style={{ fontSize: "7px" }}>89.1 kB</span>
-                        </div>
+                      <div className="whitespace-nowrap">
+                        <span className="text-green-400 text-[8px] sm:text-[9px]">
+                          {"✓"}{" "}
+                        </span>
+                        <span className="text-white/80 text-[8px] sm:text-[9px]">
+                          Compiled 4.2s
+                        </span>
+                      </div>
+                      <div className="whitespace-nowrap">
+                        <span className="text-green-400 text-[8px] sm:text-[9px]">
+                          {"✓"}{" "}
+                        </span>
+                        <span className="text-white/80 text-[8px] sm:text-[9px]">
+                          Pages{" "}
+                        </span>
+                        <span className="text-cyan-400 text-[8px] sm:text-[9px]">
+                          (14/14)
+                        </span>
+                      </div>
+                      <div className="whitespace-nowrap">
+                        <span className="text-green-400 text-[8px] sm:text-[9px]">
+                          {"✓"}{" "}
+                        </span>
+                        <span className="text-white/80 text-[8px] sm:text-[9px]">
+                          Optimized
+                        </span>
+                      </div>
+                      <div className="whitespace-nowrap">
+                        <span className="text-white/60 text-[7px] sm:text-[8px]">
+                          /{" "}
+                        </span>
+                        <span className="text-green-400 text-[7px] sm:text-[8px]">
+                          89.1 kB
+                        </span>
+                      </div>
+                      <div className="whitespace-nowrap">
+                        <span className="text-cyan-400 text-[7px] sm:text-[8px]">
+                          /dash{" "}
+                        </span>
+                        <span className="text-yellow-400 text-[7px] sm:text-[8px]">
+                          96.3 kB
+                        </span>
                       </div>
                     </div>
                   </div>
