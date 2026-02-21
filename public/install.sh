@@ -4,6 +4,9 @@ set -euo pipefail
 # tmuxonwatch Server Installer
 # Usage: bash install.sh
 # Or:    bash <(curl -sSL tmuxonwatch.com/install)
+#
+# Idempotent — safe to run multiple times.
+# Preserves existing auth tokens and configurations.
 
 BOLD='\033[1m'
 GREEN='\033[0;32m'
@@ -28,6 +31,11 @@ PLIST_NAME="com.tmuxonwatch.server"
 PLIST_DEST="$HOME/Library/LaunchAgents/$PLIST_NAME.plist"
 PORT=8787
 
+# Legacy paths (for migration from older installs)
+OLD_CONFIG_DIR="$HOME/.config/terminalpulse"
+OLD_PLIST_NAME="com.terminalpulse.server"
+OLD_PLIST_DEST="$HOME/Library/LaunchAgents/$OLD_PLIST_NAME.plist"
+
 info()  { echo -e "${CYAN}=>${RESET} $1"; }
 ok()    { echo -e "${GREEN}✓${RESET} $1"; }
 warn()  { echo -e "${YELLOW}!${RESET} $1"; }
@@ -45,14 +53,14 @@ if [[ "$(uname)" != "Darwin" ]]; then
     fail "tmuxonwatch server requires macOS."
 fi
 
-# Find Python 3.9+
+# Find Python 3.10+ (prefer homebrew, then system)
 PYTHON=""
-for candidate in python3 python; do
+for candidate in /opt/homebrew/bin/python3 /usr/local/bin/python3 python3 python; do
     if command -v "$candidate" &>/dev/null; then
         version=$("$candidate" -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")' 2>/dev/null || echo "0.0")
         major="${version%%.*}"
         minor="${version#*.}"
-        if [[ "$major" -ge 3 && "$minor" -ge 9 ]]; then
+        if [[ "$major" -ge 3 && "$minor" -ge 10 ]]; then
             PYTHON="$candidate"
             break
         fi
@@ -60,7 +68,7 @@ for candidate in python3 python; do
 done
 
 if [[ -z "$PYTHON" ]]; then
-    fail "Python 3.9+ required. Install via: brew install python3"
+    fail "Python 3.10+ required. Install via: brew install python3"
 fi
 ok "Found $($PYTHON --version)"
 
@@ -69,7 +77,24 @@ if ! command -v tmux &>/dev/null; then
 fi
 ok "Found tmux $(tmux -V | awk '{print $2}')"
 
-# ── Clone / update server files ──────────────────────────
+# ── Migrate from legacy terminalpulse install ─────────────
+if [[ -f "$OLD_CONFIG_DIR/env" && ! -f "$CONFIG_DIR/env" ]]; then
+    info "Migrating config from terminalpulse..."
+    mkdir -p "$CONFIG_DIR"
+    cp "$OLD_CONFIG_DIR/env" "$CONFIG_DIR/env"
+    chmod 600 "$CONFIG_DIR/env"
+    ok "Migrated auth token from $OLD_CONFIG_DIR"
+fi
+
+# Clean up old terminalpulse launchd service if present
+if launchctl print "gui/$(id -u)/$OLD_PLIST_NAME" &>/dev/null; then
+    info "Removing legacy terminalpulse service..."
+    launchctl bootout "gui/$(id -u)/$OLD_PLIST_NAME" 2>/dev/null || true
+    rm -f "$OLD_PLIST_DEST"
+    ok "Removed legacy service"
+fi
+
+# ── Server directory ──────────────────────────────────────
 if [[ -d "$INSTALL_DIR" ]]; then
     info "Server directory exists at $INSTALL_DIR"
 else
@@ -79,13 +104,26 @@ else
     warn "(main.py, tmux_bridge.py, ansi_parser.py, requirements.txt)"
 fi
 
-# ── Create virtual environment ────────────────────────────
-info "Setting up Python virtual environment..."
-if [[ ! -d "$INSTALL_DIR/.venv" ]]; then
+# ── Create / verify virtual environment ───────────────────
+VENV_OK=false
+if [[ -d "$INSTALL_DIR/.venv" ]]; then
+    # Check if existing venv Python is 3.10+
+    VENV_PY_VERSION=$("$INSTALL_DIR/.venv/bin/python3" -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")' 2>/dev/null || echo "0.0")
+    VENV_MAJOR="${VENV_PY_VERSION%%.*}"
+    VENV_MINOR="${VENV_PY_VERSION#*.}"
+    if [[ "$VENV_MAJOR" -ge 3 && "$VENV_MINOR" -ge 10 ]]; then
+        ok "Venv already exists (Python $VENV_PY_VERSION)"
+        VENV_OK=true
+    else
+        warn "Existing venv uses Python $VENV_PY_VERSION (need 3.10+), recreating..."
+        rm -rf "$INSTALL_DIR/.venv"
+    fi
+fi
+
+if [[ "$VENV_OK" == "false" ]]; then
+    info "Setting up Python virtual environment..."
     "$PYTHON" -m venv "$INSTALL_DIR/.venv"
-    ok "Created venv"
-else
-    ok "Venv already exists"
+    ok "Created venv (Python $("$INSTALL_DIR/.venv/bin/python3" --version | awk '{print $2}'))"
 fi
 
 info "Installing dependencies..."
@@ -96,18 +134,18 @@ info "Installing dependencies..."
 "$INSTALL_DIR/.venv/bin/pip" install -q qrcode 2>/dev/null || true
 ok "Dependencies installed"
 
-# ── Generate token ────────────────────────────────────────
+# ── Generate / preserve token ─────────────────────────────
 mkdir -p "$CONFIG_DIR"
 
 if [[ -f "$CONFIG_DIR/env" ]]; then
-    source "$CONFIG_DIR/env"
-    if [[ "${TP_TOKEN:-changeme}" == "changeme" ]]; then
+    source "$CONFIG_DIR/env" 2>/dev/null || true
+    if [[ -n "${TP_TOKEN:-}" && "${TP_TOKEN}" != "changeme" ]]; then
+        ok "Using existing auth token"
+    else
         TP_TOKEN=$("$PYTHON" -c "import secrets; print(secrets.token_urlsafe(32))")
         echo "export TP_TOKEN=\"$TP_TOKEN\"" > "$CONFIG_DIR/env"
         chmod 600 "$CONFIG_DIR/env"
-        ok "Generated new auth token"
-    else
-        ok "Using existing auth token"
+        ok "Generated new auth token (old one was invalid)"
     fi
 else
     TP_TOKEN=$("$PYTHON" -c "import secrets; print(secrets.token_urlsafe(32))")
@@ -116,11 +154,15 @@ else
     ok "Generated auth token"
 fi
 
+# ── Stop existing service gracefully ──────────────────────
+if launchctl print "gui/$(id -u)/$PLIST_NAME" &>/dev/null; then
+    info "Stopping existing service..."
+    launchctl bootout "gui/$(id -u)/$PLIST_NAME" 2>/dev/null || true
+    sleep 1
+fi
+
 # ── Create launchd plist ──────────────────────────────────
 info "Installing launchd service..."
-
-# Unload existing if present
-launchctl bootout "gui/$(id -u)/$PLIST_NAME" 2>/dev/null || true
 
 cat > "$PLIST_DEST" << PLIST
 <?xml version="1.0" encoding="UTF-8"?>
