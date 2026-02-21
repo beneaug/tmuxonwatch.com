@@ -71,7 +71,7 @@ export default function Hero() {
 
             {/* Apple Watch overlapping bottom-right corner */}
             <div className="absolute -bottom-10 -right-2 sm:-right-6 z-20">
-              <WatchScreen className="w-[150px] sm:w-[175px]" />
+              <WatchScreen className="w-[180px] sm:w-[190px]" />
             </div>
           </div>
         </div>

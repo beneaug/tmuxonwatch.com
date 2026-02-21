@@ -5,13 +5,12 @@ import Image from "next/image";
 /**
  * Apple Watch bezel with Claude Code terminal content.
  *
- * The bezel PNG is 260×400. The transparent screen region measured from the image:
- *   top: ~82px (20.5%), bottom: ~308px (77%), left: ~26px (10%), right: ~234px (90%)
- *   → screen area: top 20.5%, left 10%, width 80%, height 56.5%
+ * Bezel PNG is 260×400. Screen transparent region measured:
+ *   top edge: ~80px (20%), bottom edge: ~316px (79%)
+ *   left edge: ~24px (9.2%), right edge: ~236px (90.8%)
  *
- * Font sizes use CSS container query units (cqw) so they scale proportionally
- * with the watch size, not the viewport. This ensures text fits identically
- * whether the watch is 110px or 200px wide.
+ * Font uses container query units (cqw) so it scales with the watch,
+ * not the viewport.
  */
 export default function WatchScreen({ className = "" }: { className?: string }) {
   return (
@@ -24,25 +23,24 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
         className="relative z-10 w-full h-auto pointer-events-none select-none"
         priority
       />
-      {/* Screen content — precisely calibrated to bezel transparent region */}
+      {/* Screen content — fills the bezel's transparent region */}
       <div
         className="absolute z-0 overflow-hidden bg-black"
         style={{
-          top: "20.5%",
-          left: "10%",
-          width: "80%",
-          height: "56.5%",
-          borderRadius: "18% / 10%",
+          top: "19.5%",
+          left: "9%",
+          width: "82%",
+          height: "60%",
+          borderRadius: "20% / 9%",
           containerType: "inline-size",
         }}
       >
         <div
           className="w-full h-full flex flex-col overflow-hidden font-mono text-left"
           style={{
-            padding: "6% 7%",
-            /* cqw = % of the screen container width — scales with watch size */
-            fontSize: "4.2cqw",
-            lineHeight: 1.55,
+            padding: "8% 8%",
+            fontSize: "5.5cqw",
+            lineHeight: 1.5,
           }}
         >
           {/* ✻ Worked for 7m 31s */}
@@ -66,10 +64,10 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
             style={{ height: "1px", background: "rgba(255,255,255,0.15)", marginBottom: "3%" }}
           />
 
-          {/* User prompt — same text as the mac terminal */}
+          {/* User prompt */}
           <div
             className="text-white/90 flex-1 min-h-0 overflow-hidden"
-            style={{ lineHeight: 1.45 }}
+            style={{ lineHeight: 1.4 }}
           >
             <span className="text-white/60 font-bold">›</span> the display
             in apple watch bezel on site is still wrong, the display is a div
@@ -84,7 +82,7 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
           />
 
           {/* ►► bypass permissions — red */}
-          <div style={{ lineHeight: 1.45 }} className="shrink-0">
+          <div style={{ lineHeight: 1.4 }} className="shrink-0">
             <div>
               <span className="text-red-400">►► bypass permissions</span>
             </div>
