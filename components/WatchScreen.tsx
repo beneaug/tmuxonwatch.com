@@ -3,9 +3,9 @@
 import Image from "next/image";
 
 /**
- * Apple Watch bezel with realistic Claude Code terminal content inside.
- * Mimics the actual watch app appearance with wrapping text, dividers,
- * and real conversation content.
+ * Apple Watch bezel with realistic Claude Code terminal content.
+ * Matches the actual watch app appearance — wrapping text, green dividers,
+ * readable font sizes, and real conversation content.
  */
 export default function WatchScreen({ className = "" }: { className?: string }) {
   return (
@@ -29,14 +29,27 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
           borderRadius: "16% / 11%",
         }}
       >
-        <div className="w-full h-full px-[6%] py-[5%] font-mono flex flex-col overflow-hidden text-[5.5px] sm:text-[6.5px] leading-[1.5]">
-          {/* Status line */}
-          <div className="text-white/30 mb-[3px]">
-            <span className="text-white/50">*</span> Worked for 8m 42s
-          </div>
+        <div
+          className="w-full h-full flex flex-col overflow-hidden"
+          style={{ padding: "8% 7%" }}
+        >
+          {/* Status line — dim, like the real watch */}
+          <p
+            className="text-white/40 font-mono"
+            style={{ fontSize: "clamp(5px, 1.2vw, 8px)", marginBottom: "4%" }}
+          >
+            <span className="text-white/60">*</span> Worked for 7m 31s
+          </p>
 
-          {/* Tool use output */}
-          <div className="space-y-[2px]">
+          {/* Tool use output — cyan Read, green Edit */}
+          <div
+            className="font-mono"
+            style={{
+              fontSize: "clamp(5.5px, 1.3vw, 8.5px)",
+              lineHeight: 1.6,
+              marginBottom: "3%",
+            }}
+          >
             <div>
               <span className="text-cyan-400">Read </span>
               <span className="text-white/50">WatchScreen.tsx</span>
@@ -45,35 +58,64 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
               <span className="text-green-400">Edit </span>
               <span className="text-white/50">WatchScreen.tsx</span>
             </div>
-            <div className="text-white/25 text-[4.5px] sm:text-[5.5px]">
-              {"  "}✓ height: 48% → 55%
+            <div className="text-white/30" style={{ fontSize: "90%" }}>
+              &nbsp;&nbsp;✓ height: 48% → 55%
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="text-white/15 my-[3px] leading-none">
-            ────────────────────
+          {/* Green divider — matches the real watch */}
+          <div
+            className="text-green-500/40 font-mono leading-none overflow-hidden whitespace-nowrap"
+            style={{
+              fontSize: "clamp(5px, 1.2vw, 8px)",
+              marginBottom: "4%",
+            }}
+          >
+            ──────────────────────────
           </div>
 
-          {/* User prompt — wraps naturally like real watch */}
-          <div className="text-white/80 flex-1">
+          {/* User prompt — wraps naturally like the real watch */}
+          <div
+            className="font-mono text-white/90 flex-1"
+            style={{
+              fontSize: "clamp(5.5px, 1.3vw, 8.5px)",
+              lineHeight: 1.55,
+            }}
+          >
             <span className="text-white/50">›</span>{" "}
-            <span>
-              fix watch bezel display on site, ensure visually perfect and
-              cohesive
-            </span>
+            the display in apple watch bezel on site is still wrong, please
+            ensure it is visually perfect and cohesive
             <span className="animate-blink text-green-400">█</span>
           </div>
 
-          {/* Bottom divider */}
-          <div className="text-white/15 my-[3px] leading-none">
-            ────────────────────
+          {/* Green divider */}
+          <div
+            className="text-green-500/40 font-mono leading-none overflow-hidden whitespace-nowrap"
+            style={{
+              fontSize: "clamp(5px, 1.2vw, 8px)",
+              marginTop: "4%",
+              marginBottom: "4%",
+            }}
+          >
+            ──────────────────────────
           </div>
 
-          {/* Status bar */}
-          <div className="mt-auto">
-            <span className="text-red-400">►►</span>
-            <span className="text-white/50"> auto-approve</span>
+          {/* Status bar — red arrows, green "on" */}
+          <div
+            className="font-mono mt-auto"
+            style={{
+              fontSize: "clamp(5px, 1.2vw, 8px)",
+              lineHeight: 1.5,
+            }}
+          >
+            <div>
+              <span className="text-red-400">►►</span>
+              <span className="text-white/60"> bypass permissions</span>
+            </div>
+            <div>
+              <span className="text-green-400">on</span>
+              <span className="text-white/35"> (shift+tab to cycle)</span>
+            </div>
           </div>
         </div>
       </div>

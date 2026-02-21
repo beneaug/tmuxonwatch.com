@@ -70,7 +70,7 @@ export default function Hero() {
             </div>
 
             {/* Apple Watch showing Claude Code */}
-            <WatchScreen className="shrink-0 w-[130px] sm:w-[150px] self-center" />
+            <WatchScreen className="shrink-0 w-[160px] sm:w-[190px] self-center" />
           </div>
         </div>
       </div>
