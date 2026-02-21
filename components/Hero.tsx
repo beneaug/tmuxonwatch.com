@@ -68,8 +68,8 @@ export default function Hero() {
             <TerminalAnimation />
 
             {/* Apple Watch overlapping bottom-right corner */}
-            <div className="absolute -bottom-10 -right-4 sm:-right-6 z-20">
-              <WatchScreen className="w-[140px] sm:w-[175px]" />
+            <div className="absolute -bottom-10 right-2 sm:-right-6 z-20">
+              <WatchScreen className="w-[120px] sm:w-[175px]" />
             </div>
           </div>
         </div>

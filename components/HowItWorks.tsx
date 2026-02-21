@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import TerminalWindow from "./TerminalWindow";
 import WatchScreen from "./WatchScreen";
 
 export default function HowItWorks() {
@@ -21,8 +20,20 @@ export default function HowItWorks() {
           {/* Step 1: Install */}
           <div className="text-center space-y-6">
             <div className="flex justify-center">
-              <TerminalWindow>
-                <div className="space-y-1 text-xs sm:text-sm">
+              <div className="rounded-lg border border-white/10 bg-[#1e1e2e] shadow-xl overflow-hidden w-full max-w-[320px]">
+                {/* Compact title bar */}
+                <div className="flex items-center px-3 py-2 bg-[#2b2b3d] border-b border-white/5">
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                  </div>
+                  <span className="flex-1 text-center text-[10px] text-white/40 font-mono">
+                    bash
+                  </span>
+                </div>
+                {/* Content */}
+                <div className="p-3 font-mono text-[11px] leading-relaxed text-left space-y-0.5">
                   <div>
                     <span className="text-white/50">$ </span>
                     <span className="text-white">
@@ -42,13 +53,10 @@ export default function HowItWorks() {
                   </div>
                   <div>
                     <span className="text-green-400">{"✓"}</span>
-                    <span className="text-white/80">
-                      {" "}
-                      Server running on port 8787
-                    </span>
+                    <span className="text-white/80"> Server running on port 8787</span>
                   </div>
                 </div>
-              </TerminalWindow>
+              </div>
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-center gap-3">
