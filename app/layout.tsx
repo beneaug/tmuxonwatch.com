@@ -24,11 +24,13 @@ export const metadata: Metadata = {
     url: "https://tmuxonwatch.com",
     siteName: "tmux on watch",
     type: "website",
+    images: [{ url: "/og.png", width: 1500, height: 1000 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "tmux on watch",
     description: "Live terminal on your wrist. Full ANSI color. One command to set up.",
+    images: ["/og.png"],
   },
 };
 
