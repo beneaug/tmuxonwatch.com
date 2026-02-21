@@ -12,11 +12,6 @@ export default function Hero() {
           {/* Left — copy */}
           <div className="space-y-8">
             <div className="space-y-4">
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
-                Your terminal.
-                <br />
-                On your wrist.
-              </h1>
               <Image
                 src="/logo.svg"
                 alt="tmux on watch"
@@ -25,6 +20,11 @@ export default function Hero() {
                 className="h-auto"
                 priority
               />
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
+                Your terminal.
+                <br />
+                On your wrist.
+              </h1>
               <p className="text-lg text-white/60 max-w-lg leading-relaxed">
                 Live tmux output on Apple Watch. ANSI colors. Instant
                 notifications. One command to set up.
