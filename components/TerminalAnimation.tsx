@@ -3,8 +3,8 @@
 import TerminalWindow from "./TerminalWindow";
 
 /**
- * Hero terminal content matching a real tmux session with Claude Code output.
- * Content mirrors the user's actual screenshot.
+ * Hero terminal — Claude Code conversation that matches the watch display.
+ * The user prompt here is the same text shown on the watch web render.
  */
 export default function TerminalAnimation() {
   return (
@@ -27,7 +27,7 @@ export default function TerminalAnimation() {
 
         <Blank />
 
-        {/* Claude Code bullet list */}
+        {/* Claude Code response */}
         <L>
           <span className="text-blue-400">● </span>
           <span className="text-white/90">
@@ -53,26 +53,6 @@ export default function TerminalAnimation() {
           <span className="text-white/60">{"  – "}</span>
           <span className="font-bold text-white/80">(↑ to select)</span>
           <span className="text-white/50"> — dimmed hint</span>
-        </L>
-        <L>
-          <span className="text-white/60">{"  – "}</span>
-          <span className="font-bold text-white/80">Green dividers</span>
-          <span className="text-white/50"> — </span>
-          <span className="text-green-500/30">────</span>
-          <span className="text-white/50"> lines in green-500/30</span>
-        </L>
-        <L>
-          <span className="text-white/60">{"  – "}</span>
-          <span className="font-bold text-white/80">Full prompt text</span>
-          <span className="text-white/50">
-            {" "}— › with the exact &quot;the display in apple watch bezel on
-            site is still wrong...&quot; message + blinking cursor
-          </span>
-        </L>
-        <L>
-          <span className="text-white/60">{"  – "}</span>
-          <span className="font-bold text-white/80">bypass permissions / on (shift+tab to cycle)</span>
-          <span className="text-white/50"> — red arrows, green &quot;on&quot;</span>
         </L>
 
         <Blank />
@@ -106,20 +86,22 @@ export default function TerminalAnimation() {
 
         <Blank />
 
-        {/* User text input area */}
+        {/* User prompt — SAME text as the watch display */}
         <L>
           <span className="text-white/60">❯ </span>
-          <span className="text-cyan-300/70">check the site now, does it match?</span>
+          <span className="text-cyan-300/70">
+            the display in apple watch bezel on site is still wrong, the display
+            is a div short. please ensure it is visually perfect and cohesive
+          </span>
           <span className="animate-blink text-green-400">▊</span>
         </L>
 
         <Blank />
 
-        {/* Bypass permissions — single instance at the bottom */}
+        {/* Bypass permissions — fully red */}
         <L>
           <span className="text-white/40">{"  "}</span>
-          <span className="text-red-400">►► </span>
-          <span className="text-white/50">bypass permissions </span>
+          <span className="text-red-400">►► bypass permissions </span>
           <span className="text-green-400">on</span>
           <span className="text-white/30"> (shift+tab to cycle)</span>
         </L>

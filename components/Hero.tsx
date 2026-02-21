@@ -6,8 +6,8 @@ import WatchScreen from "./WatchScreen";
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-20 pb-32">
-      <div className="relative z-10 max-w-6xl mx-auto w-full">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto w-full">
+        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-12 items-center">
           {/* Left — copy */}
           <div className="space-y-8">
             <div className="space-y-4">
