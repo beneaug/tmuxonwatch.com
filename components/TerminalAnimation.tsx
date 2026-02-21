@@ -86,6 +86,9 @@ export default function TerminalAnimation() {
 
         <Blank />
 
+        {/* Grey divider above input */}
+        <div className="w-full" style={{ height: "1px", background: "rgba(255,255,255,0.15)", margin: "2px 0 6px" }} />
+
         {/* User prompt — SAME text as the watch display */}
         <L>
           <span className="text-white/60">❯ </span>
@@ -95,6 +98,9 @@ export default function TerminalAnimation() {
           </span>
           <span className="animate-blink text-green-400">▊</span>
         </L>
+
+        {/* Grey divider below input */}
+        <div className="w-full" style={{ height: "1px", background: "rgba(255,255,255,0.15)", margin: "6px 0 2px" }} />
 
         <Blank />
 
