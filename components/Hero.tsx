@@ -61,15 +61,17 @@ export default function Hero() {
 
           {/* Right — terminal with watch overlapping */}
           <div
-            className="animate-fade-in-up relative"
+            className="animate-fade-in-up relative overflow-visible"
             style={{ animationDelay: "0.3s" }}
           >
-            {/* Main terminal — full width */}
-            <TerminalAnimation />
+            {/* Main terminal — full width, clipped on mobile */}
+            <div className="overflow-hidden rounded-xl">
+              <TerminalAnimation />
+            </div>
 
             {/* Apple Watch overlapping bottom-right corner */}
-            <div className="absolute -bottom-10 right-2 sm:-right-6 z-20">
-              <WatchScreen className="w-[120px] sm:w-[175px]" />
+            <div className="absolute -bottom-10 right-4 sm:-right-6 z-20">
+              <WatchScreen className="w-[110px] sm:w-[175px]" />
             </div>
           </div>
         </div>

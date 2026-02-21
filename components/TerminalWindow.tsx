@@ -25,8 +25,8 @@ export default function TerminalWindow({
         </span>
       </div>
 
-      {/* tmux tab bar */}
-      <div className="flex items-center h-7 bg-[#1a1a2a] border-b border-white/5 text-[10px] font-mono px-0 overflow-hidden">
+      {/* tmux tab bar — hidden on small mobile to prevent overflow */}
+      <div className="hidden sm:flex items-center h-7 bg-[#1a1a2a] border-b border-white/5 text-[10px] font-mono px-0 overflow-hidden">
         <div className="flex items-center gap-0.5 px-2.5 py-1 text-white/35 border-r border-white/5 whitespace-nowrap">
           <span className="text-white/20 mr-1">›</span>
           …sp · claude --dangerously-skip-perm…
@@ -43,7 +43,7 @@ export default function TerminalWindow({
       </div>
 
       {/* Terminal content */}
-      <div className="p-4 pb-0 font-mono text-[11px] leading-[1.65] min-h-[320px]">
+      <div className="p-3 sm:p-4 pb-0 font-mono text-[9px] sm:text-[11px] leading-[1.65] min-h-0 sm:min-h-[320px] overflow-hidden">
         {children}
       </div>
 
