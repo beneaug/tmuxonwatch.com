@@ -19,10 +19,24 @@ export default function Footer() {
           </a>
           <span className="text-white/10">|</span>
           <a
-            href="mailto:support@tmuxonwatch.com"
+            href="/support"
             className="text-white/40 hover:text-white transition-colors"
           >
             Support
+          </a>
+          <span className="text-white/10">|</span>
+          <a
+            href="/privacy"
+            className="text-white/40 hover:text-white transition-colors"
+          >
+            Privacy
+          </a>
+          <span className="text-white/10">|</span>
+          <a
+            href="/terms"
+            className="text-white/40 hover:text-white transition-colors"
+          >
+            Terms
           </a>
         </div>
 
