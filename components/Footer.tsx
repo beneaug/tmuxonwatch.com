@@ -28,7 +28,7 @@ export default function Footer() {
 
         <div className="pt-4">
           <Image
-            src="/logo.png"
+            src="/logo.svg"
             alt="tmux on watch"
             width={180}
             height={72}

@@ -13,7 +13,7 @@ export default function Hero() {
           <div className="space-y-8">
             <div className="space-y-4">
               <Image
-                src="/logo.png"
+                src="/logo.svg"
                 alt="tmux on watch"
                 width={320}
                 height={128}
