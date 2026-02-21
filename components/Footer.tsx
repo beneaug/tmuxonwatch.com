@@ -8,7 +8,7 @@ export default function Footer() {
 
         <div className="flex items-center justify-center gap-6 text-sm">
           <a
-            href="https://github.com/augustbenedikt/TerminalPulse"
+            href="https://github.com/beneaug/TerminalPulse"
             target="_blank"
             rel="noopener noreferrer"
             className="text-white/40 hover:text-white transition-colors"

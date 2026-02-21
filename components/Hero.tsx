@@ -46,7 +46,7 @@ export default function Hero() {
                 </svg>
               </a>
               <a
-                href="https://github.com/augustbenedikt/TerminalPulse"
+                href="https://github.com/beneaug/TerminalPulse"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 border border-white/20 text-white/80 px-8 py-3.5 rounded-lg font-medium hover:border-white/40 hover:text-white transition-all duration-200"
