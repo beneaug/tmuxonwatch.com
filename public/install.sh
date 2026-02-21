@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# TerminalPulse Server Installer
+# tmuxonwatch Server Installer
 # Usage: bash install.sh
 # Or:    bash <(curl -sSL tmuxonwatch.com/install)
 
@@ -12,19 +12,19 @@ RED='\033[0;31m'
 CYAN='\033[0;36m'
 RESET='\033[0m'
 
-# Auto-detect script location if run from repo, otherwise default to ~/TerminalPulse/server
+# Auto-detect script location if run from repo, otherwise default to ~/tmuxonwatch/server
 if [[ -f "${BASH_SOURCE[0]:-}" ]]; then
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     if [[ -f "$SCRIPT_DIR/server/main.py" ]]; then
         INSTALL_DIR="$SCRIPT_DIR/server"
     else
-        INSTALL_DIR="$HOME/TerminalPulse/server"
+        INSTALL_DIR="$HOME/tmuxonwatch/server"
     fi
 else
-    INSTALL_DIR="$HOME/TerminalPulse/server"
+    INSTALL_DIR="$HOME/tmuxonwatch/server"
 fi
-CONFIG_DIR="$HOME/.config/terminalpulse"
-PLIST_NAME="com.terminalpulse.server"
+CONFIG_DIR="$HOME/.config/tmuxonwatch"
+PLIST_NAME="com.tmuxonwatch.server"
 PLIST_DEST="$HOME/Library/LaunchAgents/$PLIST_NAME.plist"
 PORT=8787
 
@@ -34,7 +34,7 @@ warn()  { echo -e "${YELLOW}!${RESET} $1"; }
 fail()  { echo -e "${RED}✗ $1${RESET}"; exit 1; }
 
 echo ""
-echo -e "${BOLD}TerminalPulse Server Installer${RESET}"
+echo -e "${BOLD}tmuxonwatch Server Installer${RESET}"
 echo "─────────────────────────────────"
 echo ""
 
@@ -42,7 +42,7 @@ echo ""
 info "Checking prerequisites..."
 
 if [[ "$(uname)" != "Darwin" ]]; then
-    fail "TerminalPulse server requires macOS."
+    fail "tmuxonwatch server requires macOS."
 fi
 
 # Find Python 3.9+
@@ -134,7 +134,7 @@ cat > "$PLIST_DEST" << PLIST
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>source "\$HOME/.config/terminalpulse/env" 2>/dev/null; exec "$INSTALL_DIR/.venv/bin/python3" -m uvicorn main:app --host 127.0.0.1 --port $PORT</string>
+        <string>source "\$HOME/.config/tmuxonwatch/env" 2>/dev/null; exec "$INSTALL_DIR/.venv/bin/python3" -m uvicorn main:app --host 127.0.0.1 --port $PORT</string>
     </array>
     <key>WorkingDirectory</key>
     <string>$INSTALL_DIR</string>
@@ -148,9 +148,9 @@ cat > "$PLIST_DEST" << PLIST
     <key>KeepAlive</key>
     <true/>
     <key>StandardOutPath</key>
-    <string>/tmp/terminalpulse.out.log</string>
+    <string>/tmp/tmuxonwatch.out.log</string>
     <key>StandardErrorPath</key>
-    <string>/tmp/terminalpulse.err.log</string>
+    <string>/tmp/tmuxonwatch.err.log</string>
 </dict>
 </plist>
 PLIST
@@ -172,7 +172,7 @@ done
 
 if [[ "$SERVER_STARTED" == "false" ]]; then
     warn "Server did not start within 10 seconds."
-    warn "Check logs: /tmp/terminalpulse.err.log"
+    warn "Check logs: /tmp/tmuxonwatch.err.log"
     if [[ ! -f "$INSTALL_DIR/main.py" ]]; then
         warn "Server files not found at $INSTALL_DIR — copy main.py, tmux_bridge.py, ansi_parser.py there first."
     fi
@@ -188,7 +188,7 @@ echo ""
 echo -e "  Server:  ${CYAN}$SERVER_URL${RESET}"
 echo -e "  Token:   ${CYAN}$TP_TOKEN${RESET}"
 echo -e "  Config:  ${CYAN}$CONFIG_DIR/env${RESET}"
-echo -e "  Logs:    ${CYAN}/tmp/terminalpulse.{out,err}.log${RESET}"
+echo -e "  Logs:    ${CYAN}/tmp/tmuxonwatch.{out,err}.log${RESET}"
 echo ""
 
 # ── QR code for iOS pairing ──────────────────────────────

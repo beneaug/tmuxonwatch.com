@@ -91,7 +91,7 @@ export default function HowItWorks() {
 
                     {/* Top label */}
                     <p className="absolute top-[10%] text-[9px] font-mono text-white/30 tracking-wider uppercase">
-                      TerminalPulse
+                      tmuxonwatch
                     </p>
 
                     {/* QR code with scanning frame */}
