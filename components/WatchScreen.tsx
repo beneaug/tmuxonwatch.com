@@ -31,7 +31,7 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
         }}
       >
         <div
-          className="w-full h-full flex flex-col overflow-hidden font-mono"
+          className="w-full h-full flex flex-col overflow-hidden font-mono text-left"
           style={{ padding: "6% 8%", fontSize: fs, lineHeight: 1.6 }}
         >
           {/* ✻ Worked for 7m 31s */}
@@ -49,17 +49,17 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
             (↑ to select)
           </p>
 
-          {/* ─── Green divider above input ─── */}
+          {/* ─── Dim grey divider above input ─── */}
           <div
             className="w-full shrink-0"
             style={{
               height: "1px",
-              background: "rgba(34, 197, 94, 0.35)",
+              background: "rgba(255, 255, 255, 0.15)",
               marginBottom: "4%",
             }}
           />
 
-          {/* User prompt — wraps naturally, exact text from screenshot */}
+          {/* User prompt — the text input area */}
           <div
             className="text-white/90 flex-1"
             style={{ lineHeight: 1.5 }}
@@ -70,22 +70,21 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
             <span className="animate-blink text-green-400">█</span>
           </div>
 
-          {/* ─── Green divider below input ─── */}
+          {/* ─── Dim grey divider below input ─── */}
           <div
             className="w-full shrink-0"
             style={{
               height: "1px",
-              background: "rgba(34, 197, 94, 0.35)",
+              background: "rgba(255, 255, 255, 0.15)",
               marginTop: "4%",
               marginBottom: "4%",
             }}
           />
 
-          {/* ►► bypass permissions */}
-          <div style={{ lineHeight: 1.5 }} className="mt-auto">
+          {/* ►► bypass permissions — red text */}
+          <div style={{ lineHeight: 1.5 }} className="mt-auto shrink-0">
             <div>
-              <span className="text-red-400">►►</span>
-              <span className="text-white/70"> bypass permissions</span>
+              <span className="text-red-400">►► bypass permissions</span>
             </div>
             <div>
               <span className="text-green-400">on</span>

@@ -65,16 +65,14 @@ export default function TerminalAnimation() {
           <span className="text-white/60">{"  – "}</span>
           <span className="font-bold text-white/80">Full prompt text</span>
           <span className="text-white/50">
-            {" "}— ❯ with the exact &quot;the display in apple watch bezel on
-            site is still wrong...&quot;
+            {" "}— › with the exact &quot;the display in apple watch bezel on
+            site is still wrong...&quot; message + blinking cursor
           </span>
         </L>
         <L>
           <span className="text-white/60">{"  – "}</span>
-          <span className="font-bold text-red-400">►► bypass permissions</span>
-          <span className="text-white/50"> / </span>
-          <span className="font-bold text-green-400">on</span>
-          <span className="text-white/50"> (shift+tab to cycle) — red arrows, green &quot;on&quot;</span>
+          <span className="font-bold text-white/80">bypass permissions / on (shift+tab to cycle)</span>
+          <span className="text-white/50"> — red arrows, green &quot;on&quot;</span>
         </L>
 
         <Blank />
@@ -108,15 +106,16 @@ export default function TerminalAnimation() {
 
         <Blank />
 
-        {/* User prompt */}
+        {/* User text input area */}
         <L>
           <span className="text-white/60">❯ </span>
           <span className="text-cyan-300/70">check the site now, does it match?</span>
+          <span className="animate-blink text-green-400">▊</span>
         </L>
 
         <Blank />
 
-        {/* Bypass permissions */}
+        {/* Bypass permissions — single instance at the bottom */}
         <L>
           <span className="text-white/40">{"  "}</span>
           <span className="text-red-400">►► </span>
