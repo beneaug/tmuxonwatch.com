@@ -77,6 +77,61 @@ if ! command -v tmux &>/dev/null; then
 fi
 ok "Found tmux $(tmux -V | awk '{print $2}')"
 
+# ── Detect network address for iOS connectivity ──────────
+info "Detecting network address..."
+
+SERVER_HOST=""
+BIND_HOST="0.0.0.0"
+
+# 1. Check for Tailscale
+if command -v tailscale &>/dev/null; then
+    TS_IP=$(tailscale ip -4 2>/dev/null || true)
+    TS_STATUS=$(tailscale status --self --json 2>/dev/null || true)
+    TS_HOSTNAME=""
+    if [[ -n "$TS_STATUS" ]]; then
+        TS_HOSTNAME=$("$PYTHON" -c "import json,sys; d=json.loads(sys.argv[1]); print(d.get('Self',{}).get('DNSName','').rstrip('.'))" "$TS_STATUS" 2>/dev/null || true)
+    fi
+
+    if [[ -n "$TS_IP" ]]; then
+        if [[ -n "$TS_HOSTNAME" ]]; then
+            SERVER_HOST="$TS_HOSTNAME"
+            ok "Tailscale detected: $TS_HOSTNAME ($TS_IP)"
+        else
+            SERVER_HOST="$TS_IP"
+            ok "Tailscale detected: $TS_IP"
+        fi
+    fi
+fi
+
+# 2. Fall back to local network IP
+if [[ -z "$SERVER_HOST" ]]; then
+    LAN_IP=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || true)
+    if [[ -n "$LAN_IP" ]]; then
+        SERVER_HOST="$LAN_IP"
+        ok "Using local network IP: $LAN_IP"
+        warn "Your iPhone must be on the same Wi-Fi network"
+        warn "For remote access, install Tailscale: https://tailscale.com"
+    fi
+fi
+
+# 3. Last resort — localhost (won't work from iPhone)
+if [[ -z "$SERVER_HOST" ]]; then
+    SERVER_HOST="127.0.0.1"
+    warn "No network interface found — using localhost"
+    warn "This will NOT work from your iPhone!"
+    warn "Install Tailscale (https://tailscale.com) or connect to Wi-Fi"
+    echo ""
+    echo -ne "  Continue anyway? [y/N] "
+    read -r CONTINUE < /dev/tty 2>/dev/null || CONTINUE="y"
+    if [[ "${CONTINUE,,}" != "y" ]]; then
+        echo ""
+        info "Install Tailscale, then re-run this script."
+        exit 0
+    fi
+fi
+
+SERVER_URL="http://${SERVER_HOST}:${PORT}"
+
 # ── Migrate from legacy terminalpulse install ─────────────
 if [[ -f "$OLD_CONFIG_DIR/env" && ! -f "$CONFIG_DIR/env" ]]; then
     info "Migrating config from terminalpulse..."
@@ -161,7 +216,7 @@ if launchctl print "gui/$(id -u)/$PLIST_NAME" &>/dev/null; then
     sleep 1
 fi
 
-# ── Create launchd plist ──────────────────────────────────
+# ── Create launchd plist (binds to 0.0.0.0 for LAN/Tailscale access) ──
 info "Installing launchd service..."
 
 cat > "$PLIST_DEST" << PLIST
@@ -176,7 +231,7 @@ cat > "$PLIST_DEST" << PLIST
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>source "\$HOME/.config/tmuxonwatch/env" 2>/dev/null; exec "$INSTALL_DIR/.venv/bin/python3" -m uvicorn main:app --host 127.0.0.1 --port $PORT</string>
+        <string>source "\$HOME/.config/tmuxonwatch/env" 2>/dev/null; exec "$INSTALL_DIR/.venv/bin/python3" -m uvicorn main:app --host $BIND_HOST --port $PORT</string>
     </array>
     <key>WorkingDirectory</key>
     <string>$INSTALL_DIR</string>
@@ -221,8 +276,6 @@ if [[ "$SERVER_STARTED" == "false" ]]; then
 fi
 
 # ── Output connection info ────────────────────────────────
-SERVER_URL="http://127.0.0.1:$PORT"
-
 echo ""
 echo "─────────────────────────────────"
 echo -e "${BOLD}${GREEN}Installation complete!${RESET}"
@@ -253,7 +306,6 @@ qr.print_ascii(invert=True)
 " "$QR_PAYLOAD"
     echo ""
 elif command -v "$PYTHON" &>/dev/null; then
-    # Try system Python qrcode module
     "$PYTHON" -c "
 import sys
 try:
@@ -278,7 +330,4 @@ else
     echo -e "  Token:      ${CYAN}$TP_TOKEN${RESET}"
 fi
 
-echo ""
-echo -e "For Tailscale/remote access, replace 127.0.0.1 with your"
-echo -e "machine's Tailscale hostname (e.g. http://my-mac.tail1234.ts.net:$PORT)"
 echo ""
