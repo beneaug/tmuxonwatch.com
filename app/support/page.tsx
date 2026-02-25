@@ -56,11 +56,13 @@ export default function SupportPage() {
                   App shows &quot;Disconnected&quot;
                 </h3>
                 <p className="text-sm">
-                  Make sure the TerminalPulse server is running on your computer
-                  (<code className="text-green-400/80 bg-white/5 px-1.5 py-0.5 rounded text-xs">
-                    tmuxonwatch status
-                  </code>). Verify your phone is on the same network as the
-                  server, or connected via Tailscale.
+                  Make sure the tmuxonwatch server is running on your Mac and
+                  your phone can reach it. You can verify the server locally
+                  with{" "}
+                  <code className="text-green-400/80 bg-white/5 px-1.5 py-0.5 rounded text-xs">
+                    curl -sf http://127.0.0.1:8787/health
+                  </code>
+                  . If needed, run the install command again.
                 </p>
               </div>
 
@@ -69,12 +71,9 @@ export default function SupportPage() {
                   QR code won&apos;t scan
                 </h3>
                 <p className="text-sm">
-                  Run{" "}
-                  <code className="text-green-400/80 bg-white/5 px-1.5 py-0.5 rounded text-xs">
-                    tmuxonwatch qr
-                  </code>{" "}
-                  to display a fresh QR code. Make sure the terminal window is
-                  large enough for the code to render clearly.
+                  Re-run the install command to print a fresh QR code. Make
+                  sure the terminal window is large enough and the code is
+                  fully visible.
                 </p>
               </div>
 
@@ -95,9 +94,9 @@ export default function SupportPage() {
                 </h3>
                 <p className="text-sm">
                   Check that tmux is installed and a session is running. The
-                  server requires Python 3.8+ and tmux. Run{" "}
+                  server requires Python 3.10+ and tmux. Check logs at{" "}
                   <code className="text-green-400/80 bg-white/5 px-1.5 py-0.5 rounded text-xs">
-                    tmuxonwatch logs
+                    /tmp/tmuxonwatch.err.log
                   </code>{" "}
                   to see error output.
                 </p>
@@ -112,7 +111,7 @@ export default function SupportPage() {
                   Your configuration and token are preserved.
                 </p>
                 <code className="block mt-2 text-green-400/80 bg-white/5 px-3 py-2 rounded text-xs font-mono">
-                  bash &lt;(curl -sSL tmuxonwatch.com/install)
+                  bash &lt;(curl -sSL https://tmuxonwatch.com/install)
                 </code>
               </div>
             </div>

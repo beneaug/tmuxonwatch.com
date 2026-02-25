@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const INSTALL_CMD = "bash <(curl -sSL tmuxonwatch.com/install)";
+const INSTALL_CMD = "bash <(curl -sSL https://tmuxonwatch.com/install)";
 
 export default function InstallBlock() {
   const [copied, setCopied] = useState(false);
@@ -85,7 +85,7 @@ export default function InstallBlock() {
             </a>{" "}
             for remote access
           </p>
-          <p>Requires macOS, Python 3.9+, and tmux</p>
+          <p>Requires macOS, Python 3.10+, and tmux</p>
         </div>
       </div>
     </section>

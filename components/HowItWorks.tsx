@@ -37,7 +37,7 @@ export default function HowItWorks() {
                   <div>
                     <span className="text-white/50">$ </span>
                     <span className="text-white">
-                      bash &lt;(curl -sSL tmuxonwatch.com/install)
+                      bash &lt;(curl -sSL https://tmuxonwatch.com/install)
                     </span>
                   </div>
                   <div className="text-cyan-400">

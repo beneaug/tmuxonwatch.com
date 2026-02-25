@@ -85,8 +85,8 @@ export default function TermsPage() {
             <p>
               The app and its original content are the property of tmux on watch
               and are protected by applicable copyright and trademark law. The
-              server component is open source and available on GitHub under its
-              respective license.
+              source repository is published on GitHub for transparency and
+              issue reporting.
             </p>
           </section>
 
