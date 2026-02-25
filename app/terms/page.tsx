@@ -19,7 +19,7 @@ export default function TermsPage() {
 
         <h1 className="text-3xl font-semibold mt-8 mb-2">Terms of Service</h1>
         <p className="text-white/40 text-sm mb-12">
-          Last updated: February 20, 2026
+          Last updated: February 25, 2026
         </p>
 
         <div className="space-y-8 text-white/70 leading-relaxed">
@@ -85,8 +85,9 @@ export default function TermsPage() {
             <p>
               The app and its original content are the property of tmux on watch
               and are protected by applicable copyright and trademark law. The
-              source repository is published on GitHub for transparency and
-              issue reporting.
+              source code repository is available under the Apache-2.0 license.
+              Trademarks, logos, and brand assets (including the names
+              tmuxonwatch and TerminalPulse) are reserved.
             </p>
           </section>
 
