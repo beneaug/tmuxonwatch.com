@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 
-const INSTALL_CMD = "bash <(curl -sSL https://tmuxonwatch.com/install)";
+const INSTALL_CMD =
+  "brew tap beneaug/tmuxonwatch && brew install tmuxonwatch && tmuxonwatch-install";
 
 export default function InstallBlock() {
   const [copied, setCopied] = useState(false);

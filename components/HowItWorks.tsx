@@ -37,8 +37,12 @@ export default function HowItWorks() {
                   <div>
                     <span className="text-white/50">$ </span>
                     <span className="text-white">
-                      bash &lt;(curl -sSL https://tmuxonwatch.com/install)
+                      brew tap beneaug/tmuxonwatch && brew install tmuxonwatch
                     </span>
+                  </div>
+                  <div>
+                    <span className="text-white/50">$ </span>
+                    <span className="text-white">tmuxonwatch-install</span>
                   </div>
                   <div className="text-cyan-400">
                     {"=>"} Checking prerequisites...
@@ -64,8 +68,8 @@ export default function HowItWorks() {
                 <h3 className="text-xl font-semibold">Install</h3>
               </div>
               <p className="text-sm text-white/50 max-w-xs mx-auto leading-relaxed">
-                One command. Python venv, auth token, launchd service — all
-                automatic.
+                Homebrew install, then run tmuxonwatch-install. Python venv,
+                auth token, launchd service — all automatic.
               </p>
             </div>
           </div>
