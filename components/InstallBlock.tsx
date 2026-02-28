@@ -42,8 +42,8 @@ export default function InstallBlock() {
               <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]/60" />
             </div>
 
-            <div className="flex items-center justify-between gap-4">
-              <code className="font-mono text-sm sm:text-base text-green-400 break-all">
+            <div className="flex items-center gap-4">
+              <code className="flex-1 min-w-0 overflow-x-auto whitespace-nowrap font-mono text-xs sm:text-sm text-green-400">
                 <span className="text-white/50">$ </span>
                 {INSTALL_CMD}
               </code>
