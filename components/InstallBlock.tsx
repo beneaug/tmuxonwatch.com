@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const INSTALL_CMD =
-  "brew tap beneaug/tmuxonwatch && brew install tmuxonwatch && tmuxonwatch-install";
+  "brew install beneaug/tmuxonwatch/tmuxonwatch && tmuxonwatch-install";
 
 export default function InstallBlock() {
   const [copied, setCopied] = useState(false);

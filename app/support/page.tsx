@@ -111,7 +111,7 @@ export default function SupportPage() {
                   Your configuration and token are preserved.
                 </p>
                 <code className="block mt-2 text-green-400/80 bg-white/5 px-3 py-2 rounded text-xs font-mono">
-                  brew tap beneaug/tmuxonwatch && brew install tmuxonwatch
+                  brew install beneaug/tmuxonwatch/tmuxonwatch
                   {"\n"}tmuxonwatch-install
                 </code>
               </div>

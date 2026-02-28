@@ -37,7 +37,7 @@ export default function HowItWorks() {
                   <div>
                     <span className="text-white/50">$ </span>
                     <span className="text-white">
-                      brew tap beneaug/tmuxonwatch && brew install tmuxonwatch
+                      brew install beneaug/tmuxonwatch/tmuxonwatch
                     </span>
                   </div>
                   <div>
