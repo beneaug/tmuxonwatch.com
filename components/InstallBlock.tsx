@@ -74,18 +74,7 @@ export default function InstallBlock() {
 
         {/* Notes */}
         <div className="space-y-2 text-sm text-white/40">
-          <p>
-            Works with{" "}
-            <a
-              href="https://tailscale.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/60 hover:text-white underline underline-offset-2 transition-colors"
-            >
-              Tailscale
-            </a>{" "}
-            for remote access
-          </p>
+          <p>Works on local network and trusted VPN setups</p>
           <p>Requires macOS, Python 3.10+, and tmux</p>
         </div>
       </div>

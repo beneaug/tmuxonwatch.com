@@ -150,7 +150,7 @@ export default function HowItWorks() {
             </div>
           </div>
 
-          {/* Step 3: Watch — Claude Code output */}
+          {/* Step 3: Watch - live terminal output */}
           <div className="text-center space-y-6">
             <div className="flex justify-center">
               <WatchScreen className="w-[160px] sm:w-[180px]" />

@@ -19,7 +19,7 @@ export default function TermsPage() {
 
         <h1 className="text-3xl font-semibold mt-8 mb-2">Terms of Service</h1>
         <p className="text-white/40 text-sm mb-12">
-          Last updated: February 25, 2026
+          Last updated: February 28, 2026
         </p>
 
         <div className="space-y-8 text-white/70 leading-relaxed">
@@ -39,9 +39,10 @@ export default function TermsPage() {
             </h2>
             <p>
               tmux on watch streams terminal output from a self-hosted server on
-              your computer to the companion iOS and watchOS apps. You are
-              responsible for installing, configuring, and securing the server
-              component on your own hardware.
+              your computer to the companion iOS and watchOS apps. Optional
+              Remote Push can use a hosted relay path for webhook-triggered
+              alerts. You are responsible for installing, configuring, and
+              securing the server component on your own hardware.
             </p>
           </section>
 
@@ -57,13 +58,19 @@ export default function TermsPage() {
               <li>Keeping your authentication token secure</li>
               <li>Running the server on trusted networks only</li>
               <li>
-                Using Tailscale or another VPN for remote access rather than
-                exposing the server to the public internet
+                Using trusted private networking if you need to reach the server
+                outside your local environment, rather than exposing it to the
+                public internet
               </li>
               <li>
                 Any commands sent to tmux through the app&apos;s input features
               </li>
             </ul>
+            <p className="mt-3">
+              If you enable Remote Push, notification metadata may be processed
+              by third-party providers (including Apple APNs, hosting/runtime,
+              and data storage providers) as described in the Privacy Policy.
+            </p>
           </section>
 
           <section>
@@ -113,7 +120,8 @@ export default function TermsPage() {
               developer shall not be liable for any indirect, incidental, or
               consequential damages arising from use of the app, including but
               not limited to unintended commands sent to tmux sessions, data
-              loss, or security incidents related to server misconfiguration.
+              loss, outages of third-party notification providers, or security
+              incidents related to server misconfiguration.
             </p>
           </section>
 

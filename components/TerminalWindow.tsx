@@ -29,7 +29,7 @@ export default function TerminalWindow({
       <div className="hidden sm:flex items-center h-7 bg-[#1a1a2a] border-b border-white/5 text-[10px] font-mono px-0 overflow-hidden">
         <div className="flex items-center gap-0.5 px-2.5 py-1 text-white/35 border-r border-white/5 whitespace-nowrap">
           <span className="text-white/20 mr-1">›</span>
-          …sp · claude --dangerously-skip-perm…
+          build.log | npm run release-checks
           <span className="text-amber-400/60 ml-1.5">🔔</span>
         </div>
         <div className="flex items-center px-2.5 py-1 text-white/30 border-r border-white/5 whitespace-nowrap">
