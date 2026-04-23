@@ -113,15 +113,15 @@ export default function WatchScrollSequence() {
     <section
       ref={containerRef}
       aria-label="Apple Watch running tmux on watch"
-      className="relative bg-black"
-      style={{ height: "300vh" }}
+      className="relative"
+      style={{ height: "200vh" }}
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center px-6">
         <div
           className="relative"
           style={{
             aspectRatio: `${FRAME_ASPECT}`,
-            width: `min(100%, calc(100svh * ${FRAME_ASPECT}))`,
+            width: `min(100%, 48rem, calc(65svh * ${FRAME_ASPECT}))`,
           }}
         >
           <canvas
@@ -131,14 +131,6 @@ export default function WatchScrollSequence() {
             }`}
           />
         </div>
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0a0a0a] to-transparent"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0a0a0a] to-transparent"
-          aria-hidden
-        />
       </div>
     </section>
   );
