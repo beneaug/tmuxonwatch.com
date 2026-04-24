@@ -13,11 +13,27 @@ function framePath(isMobile: boolean, index: number) {
   return `/scroll-watch/${dir}/frame_${padded}.webp`;
 }
 
+function fadeWindow(
+  p: number,
+  fadeInStart: number,
+  fullIn: number,
+  fullOut: number,
+  fadeOutEnd: number
+): number {
+  if (p <= fadeInStart) return 0;
+  if (p < fullIn) return (p - fadeInStart) / (fullIn - fadeInStart);
+  if (p <= fullOut) return 1;
+  if (p < fadeOutEnd) return 1 - (p - fullOut) / (fadeOutEnd - fullOut);
+  return 0;
+}
+
 export default function WatchScrollSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const framesRef = useRef<HTMLImageElement[]>([]);
   const currentFrameRef = useRef(-1);
+  const text1Ref = useRef<HTMLHeadingElement>(null);
+  const text2Ref = useRef<HTMLHeadingElement>(null);
   const [firstFrameReady, setFirstFrameReady] = useState(false);
 
   useEffect(() => {
@@ -66,16 +82,14 @@ export default function WatchScrollSequence() {
     if (reducedMotion) {
       const showFinal = () => {
         const last = count - 1;
-        if (
-          images[last].complete &&
-          images[last].naturalWidth > 0
-        ) {
+        if (images[last].complete && images[last].naturalWidth > 0) {
           drawFrame(last);
         } else {
           images[last].onload = () => drawFrame(last);
         }
       };
       showFinal();
+      if (text1Ref.current) text1Ref.current.style.opacity = "1";
       return;
     }
 
@@ -96,6 +110,13 @@ export default function WatchScrollSequence() {
           Math.max(0, Math.round(progress * (count - 1)))
         );
         drawFrame(frameIndex);
+
+        const op1 = fadeWindow(progress, 0.08, 0.22, 0.4, 0.52);
+        const op2 = fadeWindow(progress, 0.58, 0.7, 0.85, 0.95);
+        if (text1Ref.current)
+          text1Ref.current.style.opacity = String(op1);
+        if (text2Ref.current)
+          text2Ref.current.style.opacity = String(op2);
       });
     };
 
@@ -114,14 +135,14 @@ export default function WatchScrollSequence() {
       ref={containerRef}
       aria-label="Apple Watch running tmux on watch"
       className="relative"
-      style={{ height: "200vh" }}
+      style={{ height: "300vh" }}
     >
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center px-6">
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center gap-8 sm:gap-12 px-6">
         <div
           className="relative"
           style={{
             aspectRatio: `${FRAME_ASPECT}`,
-            width: `min(100%, 48rem, calc(65svh * ${FRAME_ASPECT}))`,
+            width: `min(100%, 44rem, calc(55svh * ${FRAME_ASPECT}))`,
           }}
         >
           <canvas
@@ -130,6 +151,23 @@ export default function WatchScrollSequence() {
               firstFrameReady ? "opacity-100" : "opacity-0"
             }`}
           />
+        </div>
+
+        <div className="relative h-12 sm:h-16 w-full max-w-2xl text-center pointer-events-none">
+          <h2
+            ref={text1Ref}
+            className="absolute inset-0 flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white"
+            style={{ opacity: 0 }}
+          >
+            Effortlessly elegant.
+          </h2>
+          <h2
+            ref={text2Ref}
+            className="absolute inset-0 flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white"
+            style={{ opacity: 0 }}
+          >
+            Always a glance away.
+          </h2>
         </div>
       </div>
     </section>
