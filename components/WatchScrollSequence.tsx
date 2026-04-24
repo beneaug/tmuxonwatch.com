@@ -164,7 +164,7 @@ export default function WatchScrollSequence() {
           Math.max(0, Math.min(1, approachRaw))
         );
         if (canvasWrapperRef.current) {
-          const endScale = isMobile ? 1.28 : 1.0;
+          const endScale = isMobile ? 1.55 : 1.0;
           const translate = (1 - approach) * 120;
           const scale = endScale * (0.7 + approach * 0.3);
           const opacity = Math.min(1, approach * 1.4);
