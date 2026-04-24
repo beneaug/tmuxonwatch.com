@@ -152,6 +152,21 @@ export default function WatchScrollSequence() {
           text2Ref.current.style.opacity = String(op2);
           text2Ref.current.style.transform = `translate3d(0, ${(1 - op2) * 14}px, 0)`;
         }
+
+        // Publish progress to the document root so neighboring sections
+        // compress + fade alongside the watch anim.
+        //   --seq-approach: 0 while section is below viewport → 1 once pinned.
+        //                   Drives hero fade/lift-up on approach.
+        //   --seq-exit:     0 while pinned → 1 as section scrolls off the top.
+        //                   Drives howitworks fade/rise-up on exit.
+        // Both reverse automatically — scroll is the only input.
+        const pastPin = Math.max(0, -rect.top - scrollable);
+        const exit = easeOutCubic(
+          Math.max(0, Math.min(1, pastPin / (window.innerHeight * 0.8)))
+        );
+        const root = document.documentElement;
+        root.style.setProperty("--seq-approach", approach.toFixed(3));
+        root.style.setProperty("--seq-exit", exit.toFixed(3));
       });
     };
 
@@ -162,6 +177,9 @@ export default function WatchScrollSequence() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (rafId) cancelAnimationFrame(rafId);
+      const root = document.documentElement;
+      root.style.removeProperty("--seq-approach");
+      root.style.removeProperty("--seq-exit");
     };
   }, []);
 
