@@ -17,6 +17,10 @@ function easeOutCubic(t: number) {
   return 1 - Math.pow(1 - t, 3);
 }
 
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
 function fadeWindow(
   p: number,
   fadeInStart: number,
@@ -107,11 +111,42 @@ export default function WatchScrollSequence() {
       return;
     }
 
-    let rafId = 0;
+    // Inertia state for the neighbor CSS vars. Scroll always writes the
+    // *target*; a self-scheduled rAF loop lerps the *shown* value toward it.
+    // On fast mobile flicks the target can jump a lot between scroll events,
+    // but the shown value still eases across ~6-8 frames, smoothing the fade.
+    let targetApproach = 0;
+    let targetExit = 0;
+    let shownApproach = 0;
+    let shownExit = 0;
+    let scrollRafId = 0;
+    let smoothRafId = 0;
+    const LERP = 0.14;
+    const EPS = 0.001;
+    const root = document.documentElement;
+
+    const smoothStep = () => {
+      smoothRafId = 0;
+      const dA = targetApproach - shownApproach;
+      const dE = targetExit - shownExit;
+      shownApproach += dA * LERP;
+      shownExit += dE * LERP;
+      root.style.setProperty("--seq-approach", shownApproach.toFixed(3));
+      root.style.setProperty("--seq-exit", shownExit.toFixed(3));
+      if (Math.abs(dA) > EPS || Math.abs(dE) > EPS) {
+        smoothRafId = requestAnimationFrame(smoothStep);
+      } else {
+        shownApproach = targetApproach;
+        shownExit = targetExit;
+        root.style.setProperty("--seq-approach", shownApproach.toFixed(3));
+        root.style.setProperty("--seq-exit", shownExit.toFixed(3));
+      }
+    };
+
     const onScroll = () => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        rafId = 0;
+      if (scrollRafId) return;
+      scrollRafId = requestAnimationFrame(() => {
+        scrollRafId = 0;
         const container = containerRef.current;
         if (!container) return;
         const rect = container.getBoundingClientRect();
@@ -125,10 +160,7 @@ export default function WatchScrollSequence() {
         );
         drawFrame(frameIndex);
 
-        // Apple-style approach: start ramping ~1.3 viewports before the section
-        // pins, so the watch swells into place instead of sliding in cold.
-        // Mobile scales the pinned size up past 1.0 since layout-width is capped
-        // at 100% — this visually enlarges the watch without changing flow.
+        // Canvas swell: tight sync with scroll, no inertia — Apple-style.
         const approachRaw = 1 - rect.top / (window.innerHeight * 1.3);
         const approach = easeOutCubic(
           Math.max(0, Math.min(1, approachRaw))
@@ -153,30 +185,23 @@ export default function WatchScrollSequence() {
           text2Ref.current.style.transform = `translate3d(0, ${(1 - op2) * 14}px, 0)`;
         }
 
-        // Publish progress to the document root so neighboring sections
-        // compress + fade alongside the watch anim. Both ramps use a tight
-        // window (~0.45vh) so neighbors stay fully visible until the watch
-        // is almost pinned, then snap in.
-        //   --seq-approach: 0 → 1 as the section nears pin from below.
-        //                   Drives hero fade / lift toward the watch.
-        //   --seq-exit:     0 → 1 as the section scrolls off the top.
-        //                   Drives post-section rise-up on exit.
-        // Both reverse automatically — scroll is the only input.
+        // Neighbor fade/compress: compute targets, let the smoothing loop
+        // lerp the CSS vars toward them. Mobile uses a wider window (longer
+        // viewports make the default feel snappy).
+        //   --seq-approach: 0 far below → 1 at pin.      (hero fade)
+        //   --seq-exit:     0 at pin    → 1 fully past.  (post-section rise)
+        const approachWin = isMobile ? 0.85 : 0.5;
+        const exitWin = isMobile ? 0.75 : 0.45;
         const neighborApproachRaw =
-          1 - rect.top / (window.innerHeight * 0.45);
-        const neighborApproach = easeOutCubic(
+          1 - rect.top / (window.innerHeight * approachWin);
+        targetApproach = easeInOutCubic(
           Math.max(0, Math.min(1, neighborApproachRaw))
         );
         const pastPin = Math.max(0, -rect.top - scrollable);
-        const exit = easeOutCubic(
-          Math.max(0, Math.min(1, pastPin / (window.innerHeight * 0.4)))
+        targetExit = easeInOutCubic(
+          Math.max(0, Math.min(1, pastPin / (window.innerHeight * exitWin)))
         );
-        const root = document.documentElement;
-        root.style.setProperty(
-          "--seq-approach",
-          neighborApproach.toFixed(3)
-        );
-        root.style.setProperty("--seq-exit", exit.toFixed(3));
+        if (!smoothRafId) smoothRafId = requestAnimationFrame(smoothStep);
       });
     };
 
@@ -186,8 +211,8 @@ export default function WatchScrollSequence() {
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      if (rafId) cancelAnimationFrame(rafId);
-      const root = document.documentElement;
+      if (scrollRafId) cancelAnimationFrame(scrollRafId);
+      if (smoothRafId) cancelAnimationFrame(smoothRafId);
       root.style.removeProperty("--seq-approach");
       root.style.removeProperty("--seq-exit");
     };
