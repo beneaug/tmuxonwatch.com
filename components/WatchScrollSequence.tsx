@@ -2,15 +2,13 @@
 
 import { useEffect, useRef } from "react";
 
-const DESKTOP_FRAME_COUNT = 121;
-const MOBILE_FRAME_COUNT = 121;
+const FRAME_COUNT = 121;
 const FRAME_ASPECT = 1264 / 720;
 const MOBILE_BREAKPOINT = 768;
 
-function framePath(isMobile: boolean, index: number) {
-  const dir = isMobile ? "mobile" : "desktop";
+function framePath(index: number) {
   const padded = String(index + 1).padStart(4, "0");
-  return `/scroll-watch/${dir}/frame_${padded}.webp`;
+  return `/scroll-watch/desktop/frame_${padded}.webp`;
 }
 
 function easeOutCubic(t: number) {
@@ -53,7 +51,7 @@ export default function WatchScrollSequence() {
     const isMobile = window.matchMedia(
       `(max-width: ${MOBILE_BREAKPOINT - 1}px)`
     ).matches;
-    const count = isMobile ? MOBILE_FRAME_COUNT : DESKTOP_FRAME_COUNT;
+    const count = FRAME_COUNT;
 
     const revealCanvas = () => {
       if (canvasRef.current) canvasRef.current.style.opacity = "1";
@@ -79,7 +77,7 @@ export default function WatchScrollSequence() {
     for (let i = 0; i < count; i++) {
       const img = new Image();
       img.decoding = "async";
-      img.src = framePath(isMobile, i);
+      img.src = framePath(i);
       images[i] = img;
     }
     framesRef.current = images;
