@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const DESKTOP_FRAME_COUNT = 121;
-const MOBILE_FRAME_COUNT = 61;
+const MOBILE_FRAME_COUNT = 121;
 const FRAME_ASPECT = 1264 / 720;
 const MOBILE_BREAKPOINT = 768;
 
@@ -41,7 +41,6 @@ export default function WatchScrollSequence() {
   const text1Ref = useRef<HTMLHeadingElement>(null);
   const text2Ref = useRef<HTMLHeadingElement>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
-  const [firstFrameReady, setFirstFrameReady] = useState(false);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia(
@@ -51,6 +50,10 @@ export default function WatchScrollSequence() {
       `(max-width: ${MOBILE_BREAKPOINT - 1}px)`
     ).matches;
     const count = isMobile ? MOBILE_FRAME_COUNT : DESKTOP_FRAME_COUNT;
+
+    const revealCanvas = () => {
+      if (canvasRef.current) canvasRef.current.style.opacity = "1";
+    };
 
     const drawFrame = (targetIndex: number) => {
       const canvas = canvasRef.current;
@@ -79,11 +82,11 @@ export default function WatchScrollSequence() {
 
     images[0].onload = () => {
       drawFrame(0);
-      setFirstFrameReady(true);
+      revealCanvas();
     };
     if (images[0].complete && images[0].naturalWidth > 0) {
       drawFrame(0);
-      setFirstFrameReady(true);
+      revealCanvas();
     }
 
     if (reducedMotion) {
@@ -124,13 +127,16 @@ export default function WatchScrollSequence() {
 
         // Apple-style approach: start ramping ~1.3 viewports before the section
         // pins, so the watch swells into place instead of sliding in cold.
+        // Mobile scales the pinned size up past 1.0 since layout-width is capped
+        // at 100% — this visually enlarges the watch without changing flow.
         const approachRaw = 1 - rect.top / (window.innerHeight * 1.3);
         const approach = easeOutCubic(
           Math.max(0, Math.min(1, approachRaw))
         );
         if (canvasWrapperRef.current) {
+          const endScale = isMobile ? 1.28 : 1.0;
           const translate = (1 - approach) * 120;
-          const scale = 0.7 + approach * 0.3;
+          const scale = endScale * (0.7 + approach * 0.3);
           const opacity = Math.min(1, approach * 1.4);
           canvasWrapperRef.current.style.transform = `translate3d(0, ${translate}px, 0) scale(${scale})`;
           canvasWrapperRef.current.style.opacity = String(opacity);
@@ -179,9 +185,7 @@ export default function WatchScrollSequence() {
         >
           <canvas
             ref={canvasRef}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
-              firstFrameReady ? "opacity-100" : "opacity-0"
-            }`}
+            className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500"
           />
         </div>
 

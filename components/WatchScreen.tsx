@@ -69,9 +69,9 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
             className="text-white/90 flex-1 min-h-0 overflow-hidden"
             style={{ lineHeight: 1.4 }}
           >
-            <span className="text-white/60 font-bold">›</span> prepare the
-            launch screenshots and verify the watch view matches the phone
-            layout
+            <span className="text-white/60 font-bold">›</span> the display
+            in apple watch bezel on site is still wrong, the display is a div
+            short. please ensure it is visually perfect and cohesive
             <span className="animate-blink text-green-400">█</span>
           </div>
 
@@ -81,13 +81,13 @@ export default function WatchScreen({ className = "" }: { className?: string }) 
             style={{ height: "1px", background: "rgba(255,255,255,0.15)", marginTop: "3%", marginBottom: "3%" }}
           />
 
-          {/* ►► live updates */}
+          {/* ►► bypass permissions — red */}
           <div style={{ lineHeight: 1.4 }} className="shrink-0">
             <div>
-              <span className="text-green-400">►► live updates</span>
+              <span className="text-red-400">►► bypass permissions</span>
             </div>
             <div>
-              <span className="text-green-400">on</span>
+              <span className="text-red-400">on</span>
               <span className="text-white/35"> (shift+tab to cycle)</span>
             </div>
           </div>
