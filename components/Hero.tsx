@@ -40,22 +40,22 @@ export default function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Download on the App Store"
-                className="inline-flex items-center gap-2.5 bg-white text-black px-5 py-2.5 lg:px-6 lg:py-3 rounded-lg hover:bg-green-400 transition-colors duration-200"
+                className="group relative inline-flex items-center gap-3 rounded-[14px] bg-black px-5 py-2.5 lg:px-6 lg:py-3 text-white ring-1 ring-white/15 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_8px_24px_-12px_rgba(0,0,0,0.7)] transition-all duration-200 hover:ring-white/35 hover:-translate-y-0.5 hover:shadow-[0_1px_0_rgba(255,255,255,0.12)_inset,0_14px_34px_-14px_rgba(0,0,0,0.9)] active:translate-y-0 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
               >
                 <svg
-                  className="w-7 h-7 lg:w-8 lg:h-8 -ml-1"
+                  className="h-7 w-7 shrink-0 lg:h-8 lg:w-8"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   aria-hidden
                 >
                   <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                 </svg>
-                <span className="flex flex-col items-start leading-none text-left">
-                  <span className="text-[10px] lg:text-[11px] font-medium -mb-0.5">
+                <span className="flex flex-col items-start text-left leading-[1.05]">
+                  <span className="text-[10px] font-normal tracking-[0.08em] text-white/80 lg:text-[11px]">
                     Download on the
                   </span>
-                  <span className="text-base lg:text-lg font-semibold tracking-tight">
-                    App Store
+                  <span className="text-[17px] font-semibold tracking-[-0.01em] lg:text-[19px]">
+                    App&nbsp;Store
                   </span>
                 </span>
               </a>
