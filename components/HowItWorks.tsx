@@ -5,7 +5,7 @@ import WatchScreen from "./WatchScreen";
 
 export default function HowItWorks() {
   return (
-    <section className="relative py-32 px-6">
+    <section className="relative pt-16 pb-32 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16 space-y-4">
           <p className="font-mono text-green-400 text-sm tracking-wider uppercase">

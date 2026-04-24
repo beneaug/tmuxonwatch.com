@@ -198,7 +198,7 @@ export default function WatchScrollSequence() {
       ref={containerRef}
       aria-label="Apple Watch running tmux on watch"
       className="relative"
-      style={{ height: "220vh" }}
+      style={{ height: "170vh" }}
     >
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center gap-10 sm:gap-14 sm:px-6">
         <div
