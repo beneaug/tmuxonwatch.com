@@ -13,6 +13,10 @@ function framePath(isMobile: boolean, index: number) {
   return `/scroll-watch/${dir}/frame_${padded}.webp`;
 }
 
+function easeOutCubic(t: number) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
 function fadeWindow(
   p: number,
   fadeInStart: number,
@@ -21,9 +25,11 @@ function fadeWindow(
   fadeOutEnd: number
 ): number {
   if (p <= fadeInStart) return 0;
-  if (p < fullIn) return (p - fadeInStart) / (fullIn - fadeInStart);
+  if (p < fullIn)
+    return easeOutCubic((p - fadeInStart) / (fullIn - fadeInStart));
   if (p <= fullOut) return 1;
-  if (p < fadeOutEnd) return 1 - (p - fullOut) / (fadeOutEnd - fullOut);
+  if (p < fadeOutEnd)
+    return 1 - easeOutCubic((p - fullOut) / (fadeOutEnd - fullOut));
   return 0;
 }
 
@@ -113,10 +119,14 @@ export default function WatchScrollSequence() {
 
         const op1 = fadeWindow(progress, 0.05, 0.18, 0.42, 0.5);
         const op2 = fadeWindow(progress, 0.55, 0.68, 0.88, 1.0);
-        if (text1Ref.current)
+        if (text1Ref.current) {
           text1Ref.current.style.opacity = String(op1);
-        if (text2Ref.current)
+          text1Ref.current.style.transform = `translate3d(0, ${(1 - op1) * 14}px, 0)`;
+        }
+        if (text2Ref.current) {
           text2Ref.current.style.opacity = String(op2);
+          text2Ref.current.style.transform = `translate3d(0, ${(1 - op2) * 14}px, 0)`;
+        }
       });
     };
 
@@ -137,12 +147,12 @@ export default function WatchScrollSequence() {
       className="relative"
       style={{ height: "220vh" }}
     >
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center gap-8 sm:gap-12 px-6">
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center gap-10 sm:gap-14 px-6">
         <div
           className="relative"
           style={{
             aspectRatio: `${FRAME_ASPECT}`,
-            width: `min(100%, 44rem, calc(55svh * ${FRAME_ASPECT}))`,
+            width: `min(100%, 52rem, calc(60svh * ${FRAME_ASPECT}))`,
           }}
         >
           <canvas
@@ -153,17 +163,17 @@ export default function WatchScrollSequence() {
           />
         </div>
 
-        <div className="relative h-12 sm:h-16 w-full max-w-2xl text-center pointer-events-none">
+        <div className="relative h-14 sm:h-20 w-full max-w-3xl text-center pointer-events-none">
           <h2
             ref={text1Ref}
-            className="absolute inset-0 flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white"
+            className="absolute inset-0 flex items-center justify-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter text-white will-change-transform"
             style={{ opacity: 0 }}
           >
             Effortlessly elegant.
           </h2>
           <h2
             ref={text2Ref}
-            className="absolute inset-0 flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white"
+            className="absolute inset-0 flex items-center justify-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter text-white will-change-transform"
             style={{ opacity: 0 }}
           >
             Always a glance away.
