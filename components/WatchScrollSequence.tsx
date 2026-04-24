@@ -154,18 +154,28 @@ export default function WatchScrollSequence() {
         }
 
         // Publish progress to the document root so neighboring sections
-        // compress + fade alongside the watch anim.
-        //   --seq-approach: 0 while section is below viewport → 1 once pinned.
-        //                   Drives hero fade/lift-up on approach.
-        //   --seq-exit:     0 while pinned → 1 as section scrolls off the top.
-        //                   Drives howitworks fade/rise-up on exit.
+        // compress + fade alongside the watch anim. Both ramps use a tight
+        // window (~0.45vh) so neighbors stay fully visible until the watch
+        // is almost pinned, then snap in.
+        //   --seq-approach: 0 → 1 as the section nears pin from below.
+        //                   Drives hero fade / lift toward the watch.
+        //   --seq-exit:     0 → 1 as the section scrolls off the top.
+        //                   Drives post-section rise-up on exit.
         // Both reverse automatically — scroll is the only input.
+        const neighborApproachRaw =
+          1 - rect.top / (window.innerHeight * 0.45);
+        const neighborApproach = easeOutCubic(
+          Math.max(0, Math.min(1, neighborApproachRaw))
+        );
         const pastPin = Math.max(0, -rect.top - scrollable);
         const exit = easeOutCubic(
-          Math.max(0, Math.min(1, pastPin / (window.innerHeight * 0.8)))
+          Math.max(0, Math.min(1, pastPin / (window.innerHeight * 0.4)))
         );
         const root = document.documentElement;
-        root.style.setProperty("--seq-approach", approach.toFixed(3));
+        root.style.setProperty(
+          "--seq-approach",
+          neighborApproach.toFixed(3)
+        );
         root.style.setProperty("--seq-exit", exit.toFixed(3));
       });
     };

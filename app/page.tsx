@@ -10,13 +10,13 @@ import WatchScrollSequence from "@/components/WatchScrollSequence";
 // vars; fallbacks keep content visible when JS is paused.
 const heroFrameStyle = {
   opacity: "calc(1 - var(--seq-approach, 0))",
-  transform: "translate3d(0, calc(var(--seq-approach, 0) * -48px), 0)",
+  transform: "translate3d(0, calc(var(--seq-approach, 0) * -160px), 0)",
   willChange: "opacity, transform",
 };
 
 const postSequenceFrameStyle = {
   opacity: "var(--seq-exit, 1)",
-  transform: "translate3d(0, calc((1 - var(--seq-exit, 1)) * 64px), 0)",
+  transform: "translate3d(0, calc((1 - var(--seq-exit, 1)) * 200px), 0)",
   willChange: "opacity, transform",
 };
 
