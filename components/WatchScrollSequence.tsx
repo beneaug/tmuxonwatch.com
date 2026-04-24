@@ -40,6 +40,7 @@ export default function WatchScrollSequence() {
   const currentFrameRef = useRef(-1);
   const text1Ref = useRef<HTMLHeadingElement>(null);
   const text2Ref = useRef<HTMLHeadingElement>(null);
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const [firstFrameReady, setFirstFrameReady] = useState(false);
 
   useEffect(() => {
@@ -96,6 +97,8 @@ export default function WatchScrollSequence() {
       };
       showFinal();
       if (text1Ref.current) text1Ref.current.style.opacity = "1";
+      if (canvasWrapperRef.current)
+        canvasWrapperRef.current.style.transform = "none";
       return;
     }
 
@@ -116,6 +119,18 @@ export default function WatchScrollSequence() {
           Math.max(0, Math.round(progress * (count - 1)))
         );
         drawFrame(frameIndex);
+
+        // Apple-style approach: from when the section enters viewport bottom
+        // to when it hits the top (sticky engages), ease the canvas into place.
+        const approachRaw = 1 - rect.top / window.innerHeight;
+        const approach = easeOutCubic(
+          Math.max(0, Math.min(1, approachRaw))
+        );
+        if (canvasWrapperRef.current) {
+          const translate = (1 - approach) * 40;
+          const scale = 0.94 + approach * 0.06;
+          canvasWrapperRef.current.style.transform = `translate3d(0, ${translate}px, 0) scale(${scale})`;
+        }
 
         const op1 = fadeWindow(progress, 0.05, 0.18, 0.42, 0.5);
         const op2 = fadeWindow(progress, 0.55, 0.68, 0.88, 1.0);
@@ -147,12 +162,14 @@ export default function WatchScrollSequence() {
       className="relative"
       style={{ height: "220vh" }}
     >
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center gap-10 sm:gap-14 px-6">
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center gap-10 sm:gap-14 sm:px-6">
         <div
-          className="relative"
+          ref={canvasWrapperRef}
+          className="relative will-change-transform"
           style={{
             aspectRatio: `${FRAME_ASPECT}`,
-            width: `min(100%, 52rem, calc(60svh * ${FRAME_ASPECT}))`,
+            width: `min(100%, 56rem, calc(62svh * ${FRAME_ASPECT}))`,
+            transform: "translate3d(0, 40px, 0) scale(0.94)",
           }}
         >
           <canvas
