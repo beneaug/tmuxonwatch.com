@@ -6,7 +6,7 @@ import WatchScrollSequence from "@/components/WatchScrollSequence";
 
 export default function Home() {
   return (
-    <main className="overflow-x-hidden">
+    <main className="overflow-x-clip">
       <Hero />
       <WatchScrollSequence />
       <HowItWorks />

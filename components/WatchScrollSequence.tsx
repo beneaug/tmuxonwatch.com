@@ -111,8 +111,8 @@ export default function WatchScrollSequence() {
         );
         drawFrame(frameIndex);
 
-        const op1 = fadeWindow(progress, 0.08, 0.22, 0.4, 0.52);
-        const op2 = fadeWindow(progress, 0.58, 0.7, 0.85, 0.95);
+        const op1 = fadeWindow(progress, 0.05, 0.18, 0.42, 0.5);
+        const op2 = fadeWindow(progress, 0.55, 0.68, 0.88, 1.0);
         if (text1Ref.current)
           text1Ref.current.style.opacity = String(op1);
         if (text2Ref.current)
@@ -135,7 +135,7 @@ export default function WatchScrollSequence() {
       ref={containerRef}
       aria-label="Apple Watch running tmux on watch"
       className="relative"
-      style={{ height: "300vh" }}
+      style={{ height: "220vh" }}
     >
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center gap-8 sm:gap-12 px-6">
         <div
