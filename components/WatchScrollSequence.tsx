@@ -97,8 +97,10 @@ export default function WatchScrollSequence() {
       };
       showFinal();
       if (text1Ref.current) text1Ref.current.style.opacity = "1";
-      if (canvasWrapperRef.current)
+      if (canvasWrapperRef.current) {
         canvasWrapperRef.current.style.transform = "none";
+        canvasWrapperRef.current.style.opacity = "1";
+      }
       return;
     }
 
@@ -120,16 +122,18 @@ export default function WatchScrollSequence() {
         );
         drawFrame(frameIndex);
 
-        // Apple-style approach: from when the section enters viewport bottom
-        // to when it hits the top (sticky engages), ease the canvas into place.
-        const approachRaw = 1 - rect.top / window.innerHeight;
+        // Apple-style approach: start ramping ~1.3 viewports before the section
+        // pins, so the watch swells into place instead of sliding in cold.
+        const approachRaw = 1 - rect.top / (window.innerHeight * 1.3);
         const approach = easeOutCubic(
           Math.max(0, Math.min(1, approachRaw))
         );
         if (canvasWrapperRef.current) {
-          const translate = (1 - approach) * 40;
-          const scale = 0.94 + approach * 0.06;
+          const translate = (1 - approach) * 120;
+          const scale = 0.7 + approach * 0.3;
+          const opacity = Math.min(1, approach * 1.4);
           canvasWrapperRef.current.style.transform = `translate3d(0, ${translate}px, 0) scale(${scale})`;
+          canvasWrapperRef.current.style.opacity = String(opacity);
         }
 
         const op1 = fadeWindow(progress, 0.05, 0.18, 0.42, 0.5);
@@ -169,7 +173,8 @@ export default function WatchScrollSequence() {
           style={{
             aspectRatio: `${FRAME_ASPECT}`,
             width: `min(100%, 56rem, calc(62svh * ${FRAME_ASPECT}))`,
-            transform: "translate3d(0, 40px, 0) scale(0.94)",
+            transform: "translate3d(0, 120px, 0) scale(0.7)",
+            opacity: 0,
           }}
         >
           <canvas
