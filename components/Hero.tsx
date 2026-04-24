@@ -14,16 +14,16 @@ export default function Hero() {
             className="space-y-8 lg:space-y-10 animate-fade-in-up"
             style={{ animationDelay: "0.1s" }}
           >
-            <div className="space-y-5 lg:space-y-6">
+            <div className="space-y-4 lg:space-y-5">
               <Image
                 src="/logo.svg"
                 alt="tmux on watch"
                 width={320}
                 height={128}
-                className="h-auto block mx-auto lg:mx-0 -mt-4 mb-4 w-72 sm:w-80 lg:w-96"
+                className="h-auto block mx-auto lg:mx-0 -mt-2 mb-1 w-48 sm:w-52 lg:w-56"
                 priority
               />
-              <h1 className="text-5xl sm:text-6xl lg:text-8xl xl:text-[8.5rem] font-bold leading-[0.95] tracking-tighter">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl xl:text-[7rem] font-bold leading-[0.9] tracking-tighter">
                 Your terminal.
                 <br />
                 On your wrist.
