@@ -3,8 +3,8 @@
 import TerminalWindow from "./TerminalWindow";
 
 /**
- * Hero terminal - release-prep output mirrored on the watch render.
- * The prompt text here matches the watch content.
+ * Hero terminal — Claude Code conversation that matches the watch display.
+ * The user prompt here is the same text shown on the watch web render.
  */
 export default function TerminalAnimation() {
   return (
@@ -13,10 +13,10 @@ export default function TerminalAnimation() {
         {/* git push output */}
         <L>
           <span className="text-white/40">{"  └─ "}</span>
-          <span className="text-white/70">[main ffed100] Tighten launch copy and watch preview for release</span>
+          <span className="text-white/70">[main ffed100] Pixel-match watch display to reference screenshot</span>
         </L>
         <L>
-          <span className="text-white/50">{"     4 files changed, 42 insertions(+), 19 deletions(-)"}</span>
+          <span className="text-white/50">{"     1 file changed, 37 insertions(+), 65 deletions(-)"}</span>
         </L>
         <L>
           <span className="text-white/50">{"     To https://github.com/beneaug/tmuxonwatch.com.git"}</span>
@@ -27,12 +27,13 @@ export default function TerminalAnimation() {
 
         <Blank />
 
-        {/* Release summary */}
+        {/* Claude Code response */}
         <L>
           <span className="text-blue-400">● </span>
           <span className="text-white/90">
-            Release surface updated. The latest site preview now keeps the watch
-            and terminal examples aligned with App Store-safe launch copy:
+            Pushed successfully. Vercel will auto-deploy from the main branch.
+            The latest WatchScreen.tsx now includes every element from your
+            reference screenshot:
           </span>
         </L>
 
@@ -40,35 +41,35 @@ export default function TerminalAnimation() {
 
         <L>
           <span className="text-white/60">{"  – "}</span>
-          <span className="font-bold text-white/80">Clean terminal examples</span>
-          <span className="text-white/50"> — no risky permission or brand callouts</span>
+          <span className="font-bold text-white/80">✻ Worked for 7m 31s</span>
+          <span className="text-white/50"> — with the exact ✻ symbol</span>
         </L>
         <L>
           <span className="text-white/60">{"  – "}</span>
-          <span className="font-bold text-white/80">Review-ready screenshots</span>
-          <span className="text-white/50"> — focused on tmux output and watch display</span>
+          <span className="font-bold text-white/80">[Image #17] [Image #18]</span>
+          <span className="text-white/50"> — indented, muted</span>
         </L>
         <L>
           <span className="text-white/60">{"  – "}</span>
-          <span className="font-bold text-white/80">Demo mode confirmed</span>
-          <span className="text-white/50"> — reviewers can test without server setup</span>
+          <span className="font-bold text-white/80">(↑ to select)</span>
+          <span className="text-white/50"> — dimmed hint</span>
         </L>
 
         <Blank />
 
         <L>
           <span className="text-white/60">
-            The updated build preview should be live on tmuxonwatch.com within a
-            minute or two.
+            All using fluid clamp() font sizing for responsive scaling. The
+            deployment should be live on tmuxonwatch.com within a minute or two.
           </span>
         </L>
 
         <Blank />
 
-        {/* Progress note */}
+        {/* Cogitated */}
         <L>
           <span className="text-white/50">✻ </span>
-          <span className="text-white/40">Release check finished in 3m 28s</span>
+          <span className="text-white/40">Cogitated for 3m 28s</span>
         </L>
 
         <Blank />
@@ -76,7 +77,7 @@ export default function TerminalAnimation() {
         {/* Feedback prompt */}
         <L>
           <span className="text-blue-400">● </span>
-          <span className="font-bold text-white/80">How does this launch look?</span>
+          <span className="font-bold text-white/80">How is Claude doing this session?</span>
           <span className="text-white/50"> (optional)</span>
         </L>
         <L>
@@ -88,12 +89,12 @@ export default function TerminalAnimation() {
         {/* Grey divider above input */}
         <div className="w-full" style={{ height: "1px", background: "rgba(255,255,255,0.15)", margin: "2px 0 6px" }} />
 
-        {/* User prompt - same text as the watch display */}
+        {/* User prompt — SAME text as the watch display */}
         <L>
           <span className="text-white/60">❯ </span>
           <span className="text-white">
-            prepare the launch screenshots and verify the watch view matches the
-            phone layout
+            the display in apple watch bezel on site is still wrong, the display
+            is a div short. please ensure it is visually perfect and cohesive
           </span>
           <span className="animate-blink text-green-400">▊</span>
         </L>
@@ -103,11 +104,11 @@ export default function TerminalAnimation() {
 
         <Blank />
 
-        {/* Launch mode toggle */}
+        {/* Bypass permissions — fully red */}
         <L>
           <span className="text-white/40">{"  "}</span>
-          <span className="text-green-400">►► live updates </span>
-          <span className="text-green-400">on</span>
+          <span className="text-red-400">►► bypass permissions </span>
+          <span className="text-red-400">on</span>
           <span className="text-white/30"> (shift+tab to cycle)</span>
         </L>
       </div>
