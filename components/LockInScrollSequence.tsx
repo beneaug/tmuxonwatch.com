@@ -116,36 +116,27 @@ export default function LockInScrollSequence() {
     // itself away as the user scrolls toward the pin. Same pattern as
     // WatchScrollSequence's --seq-approach but namespaced so it doesn't
     // collide with the watch sequence vars.
+    // iOS Safari throttles scroll events during momentum scroll AND mutates
+    // the viewport (URL bar collapse) at the same time. Driving updates off
+    // scroll events alone leaves the canvas/text stuck on the last fired
+    // event for 100s of ms, which looks like the sequence "broke". Instead
+    // we run a continuous rAF tick whenever the section is in the viewport
+    // (started/stopped via IntersectionObserver) so every paint reads the
+    // current scroll position fresh.
     let targetApproach = 0;
     let shownApproach = 0;
-    let scrollRafId = 0;
-    let smoothRafId = 0;
+    let tickRafId = 0;
+    let active = false;
     const LERP = 0.14;
-    const EPS = 0.001;
     const root = document.documentElement;
 
-    const smoothStep = () => {
-      smoothRafId = 0;
-      const dA = targetApproach - shownApproach;
-      shownApproach += dA * LERP;
-      root.style.setProperty("--lockin-approach", shownApproach.toFixed(3));
-      if (Math.abs(dA) > EPS) {
-        smoothRafId = requestAnimationFrame(smoothStep);
-      } else {
-        shownApproach = targetApproach;
-        root.style.setProperty("--lockin-approach", shownApproach.toFixed(3));
-      }
-    };
-
-    const onScroll = () => {
-      if (scrollRafId) return;
-      scrollRafId = requestAnimationFrame(() => {
-        scrollRafId = 0;
-        const container = containerRef.current;
-        if (!container) return;
-        const rect = container.getBoundingClientRect();
-        const scrollable = container.offsetHeight - window.innerHeight;
-        if (scrollable <= 0) return;
+    const tick = () => {
+      tickRafId = 0;
+      const container = containerRef.current;
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+      const scrollable = container.offsetHeight - window.innerHeight;
+      if (scrollable > 0) {
         const scrolled = Math.min(Math.max(-rect.top, 0), scrollable);
         const progress = scrolled / scrollable;
         const frameIndex = Math.min(
@@ -154,14 +145,11 @@ export default function LockInScrollSequence() {
         );
         drawFrame(frameIndex);
 
-        // Bottom-right pinned expansion: starts small, anchored to BR corner,
-        // grows toward filling its slot. transform-origin handles the pin.
         const approachRaw = 1 - rect.top / (window.innerHeight * 1.3);
         const approach = easeOutCubic(
           Math.max(0, Math.min(1, approachRaw))
         );
         if (canvasWrapperRef.current) {
-          // start scale much smaller so it visibly "expands from corner"
           const startScale = isMobile ? 0.45 : 0.42;
           const endScale = 1.0;
           const scale = startScale + (endScale - startScale) * approach;
@@ -170,8 +158,6 @@ export default function LockInScrollSequence() {
           canvasWrapperRef.current.style.opacity = String(opacity);
         }
 
-        // Single headline fades in, holds, then clears so the App Store
-        // button can take its place.
         const op3 = fadeWindow(progress, 0.04, 0.18, 0.62, 0.76);
         const opBtn = fadeWindow(progress, 0.76, 0.86, 1.01, 1.02);
         if (text3Ref.current) {
@@ -184,25 +170,57 @@ export default function LockInScrollSequence() {
           buttonRef.current.style.pointerEvents = opBtn > 0.5 ? "auto" : "none";
         }
 
-        // Whisk-away signal for the section above: 0 far below → 1 at pin.
         const approachWin = isMobile ? 0.85 : 0.5;
         const approachVarRaw =
           1 - rect.top / (window.innerHeight * approachWin);
         targetApproach = easeInOutCubic(
           Math.max(0, Math.min(1, approachVarRaw))
         );
-        if (!smoothRafId) smoothRafId = requestAnimationFrame(smoothStep);
-      });
+        shownApproach += (targetApproach - shownApproach) * LERP;
+        root.style.setProperty("--lockin-approach", shownApproach.toFixed(3));
+      }
+
+      if (active) tickRafId = requestAnimationFrame(tick);
     };
 
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    const start = () => {
+      if (active) return;
+      active = true;
+      if (!tickRafId) tickRafId = requestAnimationFrame(tick);
+    };
+    const stop = () => {
+      active = false;
+      if (tickRafId) {
+        cancelAnimationFrame(tickRafId);
+        tickRafId = 0;
+      }
+      // Force a final tick so the section settles in its end-state when we
+      // scroll past quickly (otherwise text/button can stay mid-fade).
+      tick();
+    };
+
+    // rootMargin extends the watch window so we settle clean even when
+    // momentum overshoots the viewport boundary.
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) start();
+          else stop();
+        }
+      },
+      { rootMargin: "200px 0px 200px 0px" }
+    );
+    if (containerRef.current) io.observe(containerRef.current);
+
+    // Initial paint + cover the case where the section is already in view
+    // at mount.
+    tick();
+    start();
+
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (scrollRafId) cancelAnimationFrame(scrollRafId);
-      if (smoothRafId) cancelAnimationFrame(smoothRafId);
+      io.disconnect();
+      active = false;
+      if (tickRafId) cancelAnimationFrame(tickRafId);
       root.style.removeProperty("--lockin-approach");
     };
   }, []);
