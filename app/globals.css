@@ -13,11 +13,15 @@
 }
 
 html, body {
+  /* Stop iOS Safari rubber-banding past the bottom of the page — that's
+     what creates the "ugly chin" of empty space below the lock-in pin. */
+  overscroll-behavior-y: none;
+}
+
+body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
-  /* Kill the iOS rubber-band "chin" past the final pinned section. */
-  overscroll-behavior-y: none;
 }
 
 /* Terminal typing animation */
