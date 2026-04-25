@@ -172,8 +172,8 @@ export default function LockInScrollSequence() {
 
         // Single headline fades in, holds, then clears so the App Store
         // button can take its place.
-        const op3 = fadeWindow(progress, 0.20, 0.40, 0.72, 0.86);
-        const opBtn = fadeWindow(progress, 0.86, 0.94, 1.01, 1.02);
+        const op3 = fadeWindow(progress, 0.04, 0.18, 0.62, 0.76);
+        const opBtn = fadeWindow(progress, 0.76, 0.86, 1.01, 1.02);
         if (text3Ref.current) {
           text3Ref.current.style.opacity = String(op3);
           text3Ref.current.style.transform = `translate3d(0, ${(1 - op3) * 14}px, 0)`;
@@ -265,10 +265,10 @@ export default function LockInScrollSequence() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Download on the App Store"
-                  className="group relative inline-flex items-center gap-3 rounded-[12px] bg-black h-14 sm:h-[60px] lg:h-[64px] px-5 sm:px-6 lg:px-7 text-white ring-1 ring-white/15 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_8px_24px_-12px_rgba(0,0,0,0.7)] transition-all duration-200 hover:ring-white/35 hover:-translate-y-0.5 hover:shadow-[0_1px_0_rgba(255,255,255,0.12)_inset,0_14px_34px_-14px_rgba(0,0,0,0.9)] active:translate-y-0 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                  className="group relative inline-flex items-center gap-3.5 rounded-[14px] bg-black h-16 sm:h-[72px] lg:h-[88px] px-6 sm:px-7 lg:px-9 text-white ring-1 ring-white/15 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_8px_24px_-12px_rgba(0,0,0,0.7)] transition-all duration-200 hover:ring-white/35 hover:-translate-y-0.5 hover:shadow-[0_1px_0_rgba(255,255,255,0.12)_inset,0_14px_34px_-14px_rgba(0,0,0,0.9)] active:translate-y-0 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                 >
                   <svg
-                    className="h-7 w-7 shrink-0 sm:h-8 sm:w-8 lg:h-9 lg:w-9"
+                    className="h-8 w-8 shrink-0 sm:h-10 sm:w-10 lg:h-12 lg:w-12"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                     aria-hidden
@@ -276,10 +276,10 @@ export default function LockInScrollSequence() {
                     <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                   </svg>
                   <span className="flex flex-col items-start text-left leading-[1.05]">
-                    <span className="text-[10px] font-normal tracking-[0.08em] text-white/80 sm:text-[11px] lg:text-[12px]">
+                    <span className="text-[11px] font-normal tracking-[0.08em] text-white/80 sm:text-[13px] lg:text-[15px]">
                       Download on the
                     </span>
-                    <span className="text-[17px] font-semibold tracking-[-0.01em] sm:text-[19px] lg:text-[21px]">
+                    <span className="text-[20px] font-semibold tracking-[-0.01em] sm:text-[24px] lg:text-[28px]">
                       App&nbsp;Store
                     </span>
                   </span>
