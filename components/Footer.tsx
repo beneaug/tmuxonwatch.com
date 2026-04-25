@@ -1,54 +1,20 @@
-import Image from "next/image";
-
 export default function Footer() {
+  const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-white/5 py-16 px-6">
-      <div className="max-w-5xl mx-auto text-center space-y-6">
-        <p className="text-white/30 text-sm italic">
-          Built for developers who can&apos;t sit still.
-        </p>
-
-        <div className="flex items-center justify-center gap-6 text-sm">
-          <a
-            href="https://github.com/beneaug/TerminalPulse"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/40 hover:text-white transition-colors"
-          >
-            GitHub
-          </a>
-          <span className="text-white/10">|</span>
-          <a
-            href="/support"
-            className="text-white/40 hover:text-white transition-colors"
-          >
-            Support
-          </a>
-          <span className="text-white/10">|</span>
-          <a
-            href="/privacy"
-            className="text-white/40 hover:text-white transition-colors"
-          >
+    <footer className="px-6 py-8 text-[11px] font-mono uppercase tracking-[0.18em] text-white/30">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <span>© {year} tmuxonwatch</span>
+        <nav className="flex items-center gap-5">
+          <a href="/privacy" className="hover:text-white/70 transition-colors">
             Privacy
           </a>
-          <span className="text-white/10">|</span>
-          <a
-            href="/terms"
-            className="text-white/40 hover:text-white transition-colors"
-          >
+          <a href="/terms" className="hover:text-white/70 transition-colors">
             Terms
           </a>
-        </div>
-
-        <div className="pt-4">
-          <Image
-            src="/logo.svg"
-            alt="tmux on watch"
-            width={180}
-            height={72}
-            className="h-auto mx-auto opacity-20"
-          />
-        </div>
+          <a href="/support" className="hover:text-white/70 transition-colors">
+            Support
+          </a>
+        </nav>
       </div>
     </footer>
   );
