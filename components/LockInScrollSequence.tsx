@@ -257,7 +257,7 @@ export default function LockInScrollSequence() {
               {/* App Store button stands alone after the headline clears */}
               <div
                 ref={buttonRef}
-                className="absolute inset-0 flex items-start pt-6 sm:pt-10 lg:pt-16 will-change-transform"
+                className="absolute inset-0 flex items-start pt-3 sm:pt-6 lg:pt-10 will-change-transform"
                 style={{ opacity: 0, pointerEvents: "none" }}
               >
                 <a
