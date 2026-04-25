@@ -44,7 +44,8 @@ export default function LockInScrollSequence() {
   const currentFrameRef = useRef(-1);
   const text1Ref = useRef<HTMLHeadingElement>(null);
   const text2Ref = useRef<HTMLHeadingElement>(null);
-  const finalRef = useRef<HTMLDivElement>(null);
+  const text3Ref = useRef<HTMLHeadingElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -105,7 +106,7 @@ export default function LockInScrollSequence() {
       };
       showFinal();
       if (text1Ref.current) text1Ref.current.style.opacity = "1";
-      if (finalRef.current) finalRef.current.style.opacity = "1";
+      if (buttonRef.current) buttonRef.current.style.opacity = "1";
       if (canvasWrapperRef.current) {
         canvasWrapperRef.current.style.transform = "none";
         canvasWrapperRef.current.style.opacity = "1";
@@ -113,7 +114,30 @@ export default function LockInScrollSequence() {
       return;
     }
 
+    // Inertia-smoothed CSS var used by the section ABOVE this one to whisk
+    // itself away as the user scrolls toward the pin. Same pattern as
+    // WatchScrollSequence's --seq-approach but namespaced so it doesn't
+    // collide with the watch sequence vars.
+    let targetApproach = 0;
+    let shownApproach = 0;
     let scrollRafId = 0;
+    let smoothRafId = 0;
+    const LERP = 0.14;
+    const EPS = 0.001;
+    const root = document.documentElement;
+
+    const smoothStep = () => {
+      smoothRafId = 0;
+      const dA = targetApproach - shownApproach;
+      shownApproach += dA * LERP;
+      root.style.setProperty("--lockin-approach", shownApproach.toFixed(3));
+      if (Math.abs(dA) > EPS) {
+        smoothRafId = requestAnimationFrame(smoothStep);
+      } else {
+        shownApproach = targetApproach;
+        root.style.setProperty("--lockin-approach", shownApproach.toFixed(3));
+      }
+    };
 
     const onScroll = () => {
       if (scrollRafId) return;
@@ -148,10 +172,13 @@ export default function LockInScrollSequence() {
           canvasWrapperRef.current.style.opacity = String(opacity);
         }
 
-        // Two intro lines fade through the middle of the scroll
-        const op1 = fadeWindow(progress, 0.05, 0.16, 0.34, 0.42);
-        const op2 = fadeWindow(progress, 0.45, 0.56, 0.72, 0.82);
-        const opFinal = fadeWindow(progress, 0.82, 0.92, 1.01, 1.02);
+        // Stacked headings crossfade through the scroll, then the App Store
+        // button takes over alone. Each window has explicit fade-in / hold /
+        // fade-out so only one element reads at a time.
+        const op1 = fadeWindow(progress, 0.04, 0.14, 0.28, 0.36);
+        const op2 = fadeWindow(progress, 0.40, 0.50, 0.62, 0.70);
+        const op3 = fadeWindow(progress, 0.72, 0.80, 0.88, 0.93);
+        const opBtn = fadeWindow(progress, 0.93, 0.97, 1.01, 1.02);
         if (text1Ref.current) {
           text1Ref.current.style.opacity = String(op1);
           text1Ref.current.style.transform = `translate3d(0, ${(1 - op1) * 14}px, 0)`;
@@ -160,10 +187,24 @@ export default function LockInScrollSequence() {
           text2Ref.current.style.opacity = String(op2);
           text2Ref.current.style.transform = `translate3d(0, ${(1 - op2) * 14}px, 0)`;
         }
-        if (finalRef.current) {
-          finalRef.current.style.opacity = String(opFinal);
-          finalRef.current.style.transform = `translate3d(0, ${(1 - opFinal) * 18}px, 0)`;
+        if (text3Ref.current) {
+          text3Ref.current.style.opacity = String(op3);
+          text3Ref.current.style.transform = `translate3d(0, ${(1 - op3) * 14}px, 0)`;
         }
+        if (buttonRef.current) {
+          buttonRef.current.style.opacity = String(opBtn);
+          buttonRef.current.style.transform = `translate3d(0, ${(1 - opBtn) * 18}px, 0)`;
+          buttonRef.current.style.pointerEvents = opBtn > 0.5 ? "auto" : "none";
+        }
+
+        // Whisk-away signal for the section above: 0 far below → 1 at pin.
+        const approachWin = isMobile ? 0.85 : 0.5;
+        const approachVarRaw =
+          1 - rect.top / (window.innerHeight * approachWin);
+        targetApproach = easeInOutCubic(
+          Math.max(0, Math.min(1, approachVarRaw))
+        );
+        if (!smoothRafId) smoothRafId = requestAnimationFrame(smoothStep);
       });
     };
 
@@ -174,6 +215,8 @@ export default function LockInScrollSequence() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (scrollRafId) cancelAnimationFrame(scrollRafId);
+      if (smoothRafId) cancelAnimationFrame(smoothRafId);
+      root.style.removeProperty("--lockin-approach");
     };
   }, []);
 
@@ -230,42 +273,44 @@ export default function LockInScrollSequence() {
                 <br />
                 On your wrist.
               </h2>
-
-              {/* Final closing block — headline + App Store button */}
-              <div
-                ref={finalRef}
-                className="absolute inset-0 will-change-transform pointer-events-auto"
+              <h2
+                ref={text3Ref}
+                className="absolute inset-0 text-5xl sm:text-6xl lg:text-8xl font-semibold tracking-tighter text-white will-change-transform"
                 style={{ opacity: 0 }}
               >
-                <h2 className="text-5xl sm:text-6xl lg:text-8xl font-semibold tracking-tighter text-white">
-                  Lock in.
-                </h2>
-                <div className="mt-6 sm:mt-8">
-                  <a
-                    href="https://apps.apple.com/us/app/tmuxonwatch/id6759545173"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Download on the App Store"
-                    className="group relative inline-flex items-center gap-3 rounded-[14px] bg-black px-5 py-2.5 lg:px-6 lg:py-3 text-white ring-1 ring-white/15 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_8px_24px_-12px_rgba(0,0,0,0.7)] transition-all duration-200 hover:ring-white/35 hover:-translate-y-0.5 hover:shadow-[0_1px_0_rgba(255,255,255,0.12)_inset,0_14px_34px_-14px_rgba(0,0,0,0.9)] active:translate-y-0 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                tmux from anywhere.
+              </h2>
+
+              {/* App Store button stands alone after the final headline clears */}
+              <div
+                ref={buttonRef}
+                className="absolute inset-0 flex items-start will-change-transform"
+                style={{ opacity: 0, pointerEvents: "none" }}
+              >
+                <a
+                  href="https://apps.apple.com/us/app/tmuxonwatch/id6759545173"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Download on the App Store"
+                  className="group relative inline-flex items-center gap-3 rounded-[14px] bg-black px-6 py-3 lg:px-7 lg:py-3.5 text-white ring-1 ring-white/15 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_8px_24px_-12px_rgba(0,0,0,0.7)] transition-all duration-200 hover:ring-white/35 hover:-translate-y-0.5 hover:shadow-[0_1px_0_rgba(255,255,255,0.12)_inset,0_14px_34px_-14px_rgba(0,0,0,0.9)] active:translate-y-0 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                >
+                  <svg
+                    className="h-8 w-8 shrink-0 lg:h-9 lg:w-9"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden
                   >
-                    <svg
-                      className="h-7 w-7 shrink-0 lg:h-8 lg:w-8"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      aria-hidden
-                    >
-                      <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-                    </svg>
-                    <span className="flex flex-col items-start text-left leading-[1.05]">
-                      <span className="text-[10px] font-normal tracking-[0.08em] text-white/80 lg:text-[11px]">
-                        Download on the
-                      </span>
-                      <span className="text-[17px] font-semibold tracking-[-0.01em] lg:text-[19px]">
-                        App&nbsp;Store
-                      </span>
+                    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                  </svg>
+                  <span className="flex flex-col items-start text-left leading-[1.05]">
+                    <span className="text-[11px] font-normal tracking-[0.08em] text-white/80 lg:text-[12px]">
+                      Download on the
                     </span>
-                  </a>
-                </div>
+                    <span className="text-[19px] font-semibold tracking-[-0.01em] lg:text-[21px]">
+                      App&nbsp;Store
+                    </span>
+                  </span>
+                </a>
               </div>
             </div>
           </div>

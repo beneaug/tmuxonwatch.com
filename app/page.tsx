@@ -1,22 +1,26 @@
 import Hero from "@/components/Hero";
 import InstallBlock from "@/components/InstallBlock";
-import Footer from "@/components/Footer";
 import WatchScrollSequence from "@/components/WatchScrollSequence";
 import LockInScrollSequence from "@/components/LockInScrollSequence";
+import LegalDisclosure from "@/components/LegalDisclosure";
 
-// Hero fades + lifts as --seq-approach grows (user scrolls into watch anim).
-// Mid-section stays dark until --seq-exit ramps up after the pin releases,
-// then rises into place. WatchScrollSequence owns those vars; fallbacks
-// keep content visible when JS is paused.
+// Hero rides --seq-approach (set by WatchScrollSequence) — fades + lifts
+// as the user scrolls into the watch pin.
 const heroFrameStyle = {
   opacity: "calc(1 - var(--seq-approach, 0))",
   transform: "translate3d(0, calc(var(--seq-approach, 0) * -160px), 0)",
   willChange: "opacity, transform",
 };
 
-const postSequenceFrameStyle = {
-  opacity: "var(--seq-exit, 1)",
-  transform: "translate3d(0, calc((1 - var(--seq-exit, 1)) * 200px), 0)",
+// InstallBlock sits between two pinned sequences. It rises into view as
+// the watch sequence releases (--seq-exit) AND whisks itself away as the
+// user scrolls toward the lock-in pin (--lockin-approach). Multiplying
+// the two opacities gives a clean appear → linger → disappear arc.
+const middleFrameStyle = {
+  opacity:
+    "calc(var(--seq-exit, 1) * (1 - var(--lockin-approach, 0)))",
+  transform:
+    "translate3d(0, calc((1 - var(--seq-exit, 1)) * 200px + var(--lockin-approach, 0) * -160px), 0)",
   willChange: "opacity, transform",
 };
 
@@ -27,11 +31,11 @@ export default function Home() {
         <Hero />
       </div>
       <WatchScrollSequence />
-      <div style={postSequenceFrameStyle}>
+      <div style={middleFrameStyle}>
         <InstallBlock />
       </div>
       <LockInScrollSequence />
-      <Footer />
+      <LegalDisclosure />
     </main>
   );
 }
