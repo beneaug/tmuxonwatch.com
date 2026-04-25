@@ -42,8 +42,6 @@ export default function LockInScrollSequence() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const framesRef = useRef<HTMLImageElement[]>([]);
   const currentFrameRef = useRef(-1);
-  const text1Ref = useRef<HTMLHeadingElement>(null);
-  const text2Ref = useRef<HTMLHeadingElement>(null);
   const text3Ref = useRef<HTMLHeadingElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
@@ -105,7 +103,7 @@ export default function LockInScrollSequence() {
         }
       };
       showFinal();
-      if (text1Ref.current) text1Ref.current.style.opacity = "1";
+      if (text3Ref.current) text3Ref.current.style.opacity = "1";
       if (buttonRef.current) buttonRef.current.style.opacity = "1";
       if (canvasWrapperRef.current) {
         canvasWrapperRef.current.style.transform = "none";
@@ -172,21 +170,10 @@ export default function LockInScrollSequence() {
           canvasWrapperRef.current.style.opacity = String(opacity);
         }
 
-        // Stacked headings crossfade through the scroll, then the App Store
-        // button takes over alone. Each window has explicit fade-in / hold /
-        // fade-out so only one element reads at a time.
-        const op1 = fadeWindow(progress, 0.04, 0.14, 0.28, 0.36);
-        const op2 = fadeWindow(progress, 0.40, 0.50, 0.62, 0.70);
-        const op3 = fadeWindow(progress, 0.72, 0.80, 0.88, 0.93);
-        const opBtn = fadeWindow(progress, 0.93, 0.97, 1.01, 1.02);
-        if (text1Ref.current) {
-          text1Ref.current.style.opacity = String(op1);
-          text1Ref.current.style.transform = `translate3d(0, ${(1 - op1) * 14}px, 0)`;
-        }
-        if (text2Ref.current) {
-          text2Ref.current.style.opacity = String(op2);
-          text2Ref.current.style.transform = `translate3d(0, ${(1 - op2) * 14}px, 0)`;
-        }
+        // Single headline holds for the bulk of the scroll, then yields to
+        // the App Store button alone.
+        const op3 = fadeWindow(progress, 0.10, 0.28, 0.78, 0.88);
+        const opBtn = fadeWindow(progress, 0.88, 0.95, 1.01, 1.02);
         if (text3Ref.current) {
           text3Ref.current.style.opacity = String(op3);
           text3Ref.current.style.transform = `translate3d(0, ${(1 - op3) * 14}px, 0)`;
@@ -224,22 +211,33 @@ export default function LockInScrollSequence() {
     <section
       ref={containerRef}
       aria-label="Lock in — tmuxonwatch on Apple Watch"
-      className="relative"
-      style={{ height: "230vh" }}
+      className="relative bg-black"
+      style={{ height: "230svh" }}
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Bottom-right pinned video canvas — expands FROM the corner */}
+      <div
+        className="sticky top-0 w-full overflow-hidden bg-black"
+        style={{ height: "100svh" }}
+      >
+        {/* Bottom-right pinned video canvas — expands FROM the corner.
+            On mobile we let it overflow the right edge so the watch face
+            actually fills the screen instead of leaving a tiny strip. */}
         <div
           ref={canvasWrapperRef}
           className="absolute bottom-0 right-0 will-change-transform pointer-events-none"
           style={{
             transformOrigin: "100% 100%",
             aspectRatio: `${FRAME_ASPECT}`,
-            // Slot sized so plenty of dead space lives top-left for copy.
-            // Mobile: nearly full width, anchored bottom. Desktop: ~62% width.
-            width: "min(96vw, calc(98svh * " + FRAME_ASPECT + "), 70rem)",
-            maxHeight: "78svh",
-            transform: "scale(0.42)",
+            // Mobile: 145vw lets the watch face fill ~the bottom 80% of the
+            // screen; the dead-space region (top-left) still has plenty of
+            // room for the headline. Desktop stays bounded by max width.
+            width:
+              "min(max(145vw, calc(72svh * " +
+              FRAME_ASPECT +
+              ")), calc(100svh * " +
+              FRAME_ASPECT +
+              "), 78rem)",
+            maxHeight: "100svh",
+            transform: "scale(0.5)",
             opacity: 0,
           }}
         >
@@ -249,39 +247,23 @@ export default function LockInScrollSequence() {
           />
         </div>
 
-        {/* Copy lives in the dead space (top + left). Same crossfade pattern
-            as WatchScrollSequence — three stacked headings, only one shown
-            at a time; the third is the closing CTA. */}
-        <div className="relative z-10 h-full w-full px-6 sm:px-10 lg:px-16 pt-[env(safe-area-inset-top)]">
-          <div className="h-full max-w-3xl pt-16 sm:pt-24 lg:pt-28 pointer-events-none">
-            <div className="relative h-40 sm:h-48 lg:h-56">
-              <h2
-                ref={text1Ref}
-                className="absolute inset-0 text-4xl sm:text-5xl lg:text-7xl font-semibold tracking-tighter text-white will-change-transform"
-                style={{ opacity: 0 }}
-              >
-                Glance.
-                <br />
-                Don&apos;t pull out your phone.
-              </h2>
-              <h2
-                ref={text2Ref}
-                className="absolute inset-0 text-4xl sm:text-5xl lg:text-7xl font-semibold tracking-tighter text-white will-change-transform"
-                style={{ opacity: 0 }}
-              >
-                Live tmux. ANSI colors.
-                <br />
-                On your wrist.
-              </h2>
+        {/* Copy lives in the dead-space (top + left). Headline holds for
+            most of the scroll, then the App Store button takes over. */}
+        <div
+          className="relative z-10 h-full w-full px-6 sm:px-10 lg:px-16"
+          style={{ paddingTop: "max(env(safe-area-inset-top), 1rem)" }}
+        >
+          <div className="h-full max-w-3xl pt-12 sm:pt-20 lg:pt-24 pointer-events-none">
+            <div className="relative h-44 sm:h-52 lg:h-64">
               <h2
                 ref={text3Ref}
-                className="absolute inset-0 text-5xl sm:text-6xl lg:text-8xl font-semibold tracking-tighter text-white will-change-transform"
+                className="absolute inset-0 text-[2.6rem] leading-[1.02] sm:text-6xl lg:text-8xl font-semibold tracking-tighter text-white will-change-transform"
                 style={{ opacity: 0 }}
               >
-                tmux from anywhere.
+                tokenmax from anywhere.
               </h2>
 
-              {/* App Store button stands alone after the final headline clears */}
+              {/* App Store button stands alone after the headline clears */}
               <div
                 ref={buttonRef}
                 className="absolute inset-0 flex items-start will-change-transform"
@@ -292,10 +274,10 @@ export default function LockInScrollSequence() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Download on the App Store"
-                  className="group relative inline-flex items-center gap-3 rounded-[14px] bg-black px-6 py-3 lg:px-7 lg:py-3.5 text-white ring-1 ring-white/15 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_8px_24px_-12px_rgba(0,0,0,0.7)] transition-all duration-200 hover:ring-white/35 hover:-translate-y-0.5 hover:shadow-[0_1px_0_rgba(255,255,255,0.12)_inset,0_14px_34px_-14px_rgba(0,0,0,0.9)] active:translate-y-0 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                  className="group relative inline-flex items-center gap-2.5 rounded-[12px] bg-black px-4 py-2.5 sm:px-5 sm:py-3 lg:px-6 lg:py-3.5 text-white ring-1 ring-white/15 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_8px_24px_-12px_rgba(0,0,0,0.7)] transition-all duration-200 hover:ring-white/35 hover:-translate-y-0.5 hover:shadow-[0_1px_0_rgba(255,255,255,0.12)_inset,0_14px_34px_-14px_rgba(0,0,0,0.9)] active:translate-y-0 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                 >
                   <svg
-                    className="h-8 w-8 shrink-0 lg:h-9 lg:w-9"
+                    className="h-6 w-6 shrink-0 sm:h-7 sm:w-7 lg:h-8 lg:w-8"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                     aria-hidden
@@ -303,10 +285,10 @@ export default function LockInScrollSequence() {
                     <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                   </svg>
                   <span className="flex flex-col items-start text-left leading-[1.05]">
-                    <span className="text-[11px] font-normal tracking-[0.08em] text-white/80 lg:text-[12px]">
+                    <span className="text-[9px] sm:text-[10px] lg:text-[11px] font-normal tracking-[0.08em] text-white/80">
                       Download on the
                     </span>
-                    <span className="text-[19px] font-semibold tracking-[-0.01em] lg:text-[21px]">
+                    <span className="text-[15px] sm:text-[17px] lg:text-[19px] font-semibold tracking-[-0.01em]">
                       App&nbsp;Store
                     </span>
                   </span>

@@ -12,10 +12,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
-body {
+html, body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+  /* Kill the iOS rubber-band "chin" past the final pinned section. */
+  overscroll-behavior-y: none;
 }
 
 /* Terminal typing animation */
