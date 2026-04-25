@@ -15,7 +15,7 @@ export default function InstallBlock() {
   };
 
   return (
-    <section id="install" className="relative py-32 px-6">
+    <section id="install" className="relative py-12 sm:py-16 px-6">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-green-500/5 rounded-full blur-3xl pointer-events-none" />
 
