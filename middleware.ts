@@ -8,9 +8,9 @@ function pickLocale(req: NextRequest): string {
   const cookieLocale = req.cookies.get("NEXT_LOCALE")?.value;
   if (isLocale(cookieLocale)) return cookieLocale;
 
-  // 2. Vercel geo — Japan → ja.
-  const country = (req as unknown as { geo?: { country?: string } }).geo
-    ?.country;
+  // 2. Vercel geo header — Japan → ja. (Next.js 15+ removed req.geo;
+  // Vercel sets `x-vercel-ip-country` on every prod request.)
+  const country = req.headers.get("x-vercel-ip-country");
   if (country === "JP") return "ja";
 
   // 3. Accept-Language — anything starting with "ja" → ja, else en.
