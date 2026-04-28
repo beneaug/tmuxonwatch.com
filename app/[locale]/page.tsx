@@ -3,6 +3,7 @@ import InstallBlock from "@/components/InstallBlock";
 import WatchScrollSequence from "@/components/WatchScrollSequence";
 import LockInScrollSequence from "@/components/LockInScrollSequence";
 import LegalDisclosure from "@/components/LegalDisclosure";
+import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 
 // Hero rides --seq-approach (set by WatchScrollSequence) — fades + lifts
 // as the user scrolls into the watch pin.
@@ -24,18 +25,30 @@ const middleFrameStyle = {
   willChange: "opacity, transform",
 };
 
-export default function Home() {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: raw } = await params;
+  const locale = getLocale(raw);
+  const dict = getDictionary(locale);
+
   return (
     <main className="overflow-x-clip">
       <div style={heroFrameStyle}>
-        <Hero />
+        <Hero dict={dict.hero} />
       </div>
-      <WatchScrollSequence />
+      <WatchScrollSequence dict={dict.watchSequence} />
       <div style={middleFrameStyle}>
-        <InstallBlock />
+        <InstallBlock dict={dict.install} />
       </div>
-      <LockInScrollSequence />
-      <LegalDisclosure />
+      <LockInScrollSequence dict={dict.lockin} />
+      <LegalDisclosure
+        currentLocale={locale}
+        common={dict.common}
+        languageMenu={dict.languageMenu}
+      />
     </main>
   );
 }

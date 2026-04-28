@@ -35,7 +35,13 @@ function fadeWindow(
   return 0;
 }
 
-export default function WatchScrollSequence() {
+interface WatchSeqDict {
+  ariaLabel: string;
+  headline1: string;
+  headline2: string;
+}
+
+export default function WatchScrollSequence({ dict }: { dict: WatchSeqDict }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const framesRef = useRef<HTMLImageElement[]>([]);
@@ -219,7 +225,7 @@ export default function WatchScrollSequence() {
   return (
     <section
       ref={containerRef}
-      aria-label="Apple Watch running tmux on watch"
+      aria-label={dict.ariaLabel}
       className="relative"
       style={{ height: "170vh" }}
     >
@@ -246,14 +252,14 @@ export default function WatchScrollSequence() {
             className="absolute inset-0 flex items-center justify-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter text-white will-change-transform"
             style={{ opacity: 0 }}
           >
-            Effortlessly elegant.
+            {dict.headline1}
           </h2>
           <h2
             ref={text2Ref}
             className="absolute inset-0 flex items-center justify-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter text-white will-change-transform"
             style={{ opacity: 0 }}
           >
-            Always a glance away.
+            {dict.headline2}
           </h2>
         </div>
       </div>

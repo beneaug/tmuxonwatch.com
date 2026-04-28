@@ -5,7 +5,15 @@ import { useState } from "react";
 const INSTALL_CMD =
   "brew install beneaug/tmuxonwatch/tmuxonwatch && tmuxonwatch-install";
 
-export default function InstallBlock() {
+interface InstallDict {
+  eyebrow: string;
+  heading: string;
+  copied: string;
+  note1: string;
+  note2: string;
+}
+
+export default function InstallBlock({ dict }: { dict: InstallDict }) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
@@ -22,10 +30,10 @@ export default function InstallBlock() {
       <div className="relative z-10 max-w-2xl mx-auto text-center space-y-8">
         <div className="space-y-4">
           <p className="font-mono text-green-400 text-sm tracking-wider uppercase">
-            Install
+            {dict.eyebrow}
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Ready? One command.
+            {dict.heading}
           </h2>
         </div>
 
@@ -68,14 +76,14 @@ export default function InstallBlock() {
               copied ? "opacity-100 text-green-400" : "opacity-0"
             }`}
           >
-            Copied to clipboard
+            {dict.copied}
           </div>
         </button>
 
         {/* Notes */}
         <div className="space-y-2 text-sm text-white/40">
-          <p>Works on local network and trusted VPN setups</p>
-          <p>Requires macOS, Python 3.10+, and tmux</p>
+          <p>{dict.note1}</p>
+          <p>{dict.note2}</p>
         </div>
       </div>
     </section>

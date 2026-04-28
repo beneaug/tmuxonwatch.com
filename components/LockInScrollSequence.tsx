@@ -37,7 +37,15 @@ function fadeWindow(
   return 0;
 }
 
-export default function LockInScrollSequence() {
+interface LockInDict {
+  ariaLabel: string;
+  headline: string;
+  appStoreSmall: string;
+  appStoreLarge: string;
+  appStoreAria: string;
+}
+
+export default function LockInScrollSequence({ dict }: { dict: LockInDict }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const framesRef = useRef<HTMLImageElement[]>([]);
@@ -228,7 +236,7 @@ export default function LockInScrollSequence() {
   return (
     <section
       ref={containerRef}
-      aria-label="Lock in — tmuxonwatch on Apple Watch"
+      aria-label={dict.ariaLabel}
       className="relative lockin-section"
       style={{ height: "230vh" }}
     >
@@ -269,7 +277,7 @@ export default function LockInScrollSequence() {
                 className="absolute inset-0 text-[2.75rem] leading-[0.95] sm:text-6xl lg:text-8xl font-semibold tracking-tighter text-white will-change-transform"
                 style={{ opacity: 0 }}
               >
-                tokenmax from anywhere.
+                {dict.headline}
               </h2>
 
               {/* App Store button stands alone after the headline clears */}
@@ -282,7 +290,7 @@ export default function LockInScrollSequence() {
                   href="https://apps.apple.com/us/app/tmuxonwatch/id6759545173"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Download on the App Store"
+                  aria-label={dict.appStoreAria}
                   className="group relative inline-flex items-center gap-3.5 rounded-[14px] bg-black h-16 sm:h-[72px] lg:h-[88px] px-6 sm:px-7 lg:px-9 text-white ring-1 ring-white/15 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_8px_24px_-12px_rgba(0,0,0,0.7)] transition-all duration-200 hover:ring-white/35 hover:-translate-y-0.5 hover:shadow-[0_1px_0_rgba(255,255,255,0.12)_inset,0_14px_34px_-14px_rgba(0,0,0,0.9)] active:translate-y-0 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                 >
                   <svg
@@ -295,10 +303,10 @@ export default function LockInScrollSequence() {
                   </svg>
                   <span className="flex flex-col items-start text-left leading-[1.05]">
                     <span className="text-[11px] font-normal tracking-[0.08em] text-white/80 sm:text-[13px] lg:text-[15px]">
-                      Download on the
+                      {dict.appStoreSmall}
                     </span>
                     <span className="text-[20px] font-semibold tracking-[-0.01em] sm:text-[24px] lg:text-[28px]">
-                      App&nbsp;Store
+                      {dict.appStoreLarge}
                     </span>
                   </span>
                 </a>
