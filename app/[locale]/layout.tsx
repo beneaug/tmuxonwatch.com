@@ -27,6 +27,7 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const dict = getDictionary(locale);
+  const ogImage = locale === "ja" ? "/og-ja.png" : "/og.png";
   return {
     title: dict.meta.title,
     description: dict.meta.description,
@@ -45,13 +46,13 @@ export async function generateMetadata({
       siteName: dict.meta.siteName,
       type: "website",
       locale: locale === "ja" ? "ja_JP" : "en_US",
-      images: [{ url: "/og.png", width: 1500, height: 1000 }],
+      images: [{ url: ogImage, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title: dict.meta.twitterTitle,
       description: dict.meta.twitterDescription,
-      images: ["/og.png"],
+      images: [ogImage],
     },
   };
 }
