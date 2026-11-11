@@ -73,7 +73,7 @@ const dictionaries = {
     },
     privacy: {
       title: "Privacy Policy",
-      lastUpdated: "Last updated: February 28, 2026",
+      lastUpdated: "Last updated: November 11, 2026",
       sections: {
         overview: {
           h: "Overview",
@@ -95,7 +95,7 @@ const dictionaries = {
           items: [
             {
               k: "Server connection details",
-              v: "(URL and authentication token) — stored in the iOS Keychain",
+              v: "Server URL — stored in app preferences on iPhone. Authentication token — stored in the iOS Keychain.",
             },
             {
               k: "App preferences",
@@ -113,7 +113,7 @@ const dictionaries = {
         },
         relay: {
           h: "Optional Remote Push Relay",
-          p: "If you enable Remote Push in app settings, the app may register your APNs device token with the tmux on watch relay using your notify token. Webhook notifications sent to the relay include a title and message and are forwarded to Apple Push Notification service (APNs) for delivery.",
+          p: "If you enable Remote Push in app settings, the app may register your APNs device token with the tmux on watch relay using your notify token. Webhook notifications sent to the relay include a title and message and are forwarded to Apple Push Notification service (APNs) for delivery. The relay stores APNs device tokens under a hash of the notify token. It also uses request IP addresses and notify-token hashes in Redis rate-limit counters to prevent abuse; these are not used for advertising or tracking.",
         },
         providers: {
           h: "Service Providers",
@@ -126,7 +126,7 @@ const dictionaries = {
         },
         retention: {
           h: "Retention and Deletion",
-          p: "Relay device-token mappings are stored with a rolling expiration and currently expire after up to 120 days without refresh. Disabling Remote Push triggers an unregister request from the app. APNs may retain delivery metadata under Apple's policies.",
+          p: "Relay device-token mappings are stored with a rolling expiration and currently expire after up to 120 days without refresh. Disabling Remote Push attempts to unregister the device; if that request fails, its mapping can remain until expiration. IP-based rate-limit keys are configured with 1- or 10-minute expiration windows; notify-token-hash counters use windows of up to one hour. Hosting and delivery providers may retain operational logs under their own policies.",
         },
         iap: {
           h: "In-App Purchases",
@@ -325,7 +325,7 @@ const dictionaries = {
     },
     privacy: {
       title: "プライバシーポリシー",
-      lastUpdated: "最終更新日：2026年2月28日",
+      lastUpdated: "最終更新日：2026年11月11日",
       sections: {
         overview: {
           h: "概要",
@@ -347,7 +347,7 @@ const dictionaries = {
           items: [
             {
               k: "サーバー接続情報",
-              v: "（URLと認証トークン）— iOSキーチェーンに保存されます",
+              v: "サーバー URL — iPhone のアプリ設定に保存。認証トークン — iOS キーチェーンに保存。",
             },
             {
               k: "アプリの設定",
@@ -365,7 +365,7 @@ const dictionaries = {
         },
         relay: {
           h: "任意のリモートプッシュリレー",
-          p: "アプリ設定でリモートプッシュを有効にすると、お客様の通知トークンを用いて、APNsデバイストークンがtmuxonwatchリレーに登録される場合があります。リレー宛てに送信されたWebhook通知は、タイトルとメッセージを含み、Apple Push Notificationサービス（APNs）経由で配信されます。",
+          p: "アプリ設定でリモートプッシュを有効にすると、お客様の通知トークンを用いて、APNsデバイストークンがtmuxonwatchリレーに登録される場合があります。リレー宛てに送信されたWebhook通知は、タイトルとメッセージを含み、Apple Push Notificationサービス（APNs）経由で配信されます。リレーは通知トークンのハッシュに対応するAPNsデバイストークンを保存します。また、不正利用を防ぐため、リクエスト元のIPアドレスと通知トークンのハッシュをRedisのレート制限カウンターで使用します。これらを広告やトラッキングには使用しません。",
         },
         providers: {
           h: "サービス提供者",
@@ -379,7 +379,7 @@ const dictionaries = {
         },
         retention: {
           h: "保持と削除",
-          p: "リレー上のデバイストークン情報はローリング有効期限で管理されており、現時点では更新がない場合に最大120日で失効します。リモートプッシュを無効化すると、アプリから登録解除のリクエストが送信されます。なお、配信メタデータについては、Appleのポリシーに従ってAPNs側で保持される場合があります。",
+          p: "リレー上のデバイストークン情報はローリング有効期限で管理されており、現時点では更新がない場合に最大120日で失効します。リモートプッシュを無効化すると、アプリは登録解除を試みます。リクエストが失敗した場合、対応情報は有効期限まで残ることがあります。IPアドレスによるレート制限キーには1分または10分、通知トークンのハッシュによるカウンターには最大1時間の有効期限が設定されています。ホスティングや配信の提供者は、それぞれのポリシーに従って運用ログを保持する場合があります。",
         },
         iap: {
           h: "アプリ内課金",
